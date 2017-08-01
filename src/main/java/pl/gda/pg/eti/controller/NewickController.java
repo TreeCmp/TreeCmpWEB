@@ -65,8 +65,9 @@ public class NewickController {
 	private static String dataDir = "";
 
 	public static void main(String[] args) throws Exception {
-		SpringApplication.run(NewickController.class, args);
 		CopyDataAndConfigFilesToTemporary();
+		SpringApplication.run(NewickController.class, args);
+		ShowMessageAboutSuccessfulStartup();
 	}
 
 	private static void CopyDataAndConfigFilesToTemporary() {
@@ -123,6 +124,17 @@ public class NewickController {
 				}
 			}
 		}
+	}
+
+	private static void ShowMessageAboutSuccessfulStartup() {
+		//String port = environment.getProperty("local.server.port");
+		System.out.println();
+		System.out.println("********************************");
+		System.out.println("Application started successfully");
+		System.out.println("********************************");
+		System.out.println();
+		System.out.println("Description:");
+		System.out.format("The application GUI is available at: http://localhost:%s/TreeCmp/WEB", "<port_number>");
 	}
 
 	@RequestMapping(value = "/WEB", method = RequestMethod.GET)
