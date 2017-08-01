@@ -1,0 +1,118 @@
+body {
+		overflow-x: hidden;
+		padding-top: 70px;		
+	}
+
+.error {
+	color: #ff0000;
+}
+
+.errorblock {
+	color: #000;
+	background-color: #ffEEEE;
+	border: 3px solid #ff0000;
+	padding: 8px;
+	margin: 16px;
+}
+	
+.visuallyhidden { 
+		border: 0; 
+		clip: rect(0 0 0 0); 
+		height: 1px; 
+		margin: -1px; 
+		overflow: hidden; 
+		padding: 0; 
+		position: absolute; 
+		width: 1px; 
+}
+
+.btn {
+	transition: background 0.2s;
+}
+
+.exmpBtn {
+    display: block;
+}
+
+.col-right .btn {
+	margin-bottom: 8px;
+}
+
+.mini-alerts a {
+	position: relative;
+}
+.mini-alerts .badge {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	font-size: .7em;
+	padding: 4px;
+	background: #ff0000;
+	color: #fff;
+}
+.mini-alerts .popover {
+	width: 200px;
+}
+.mini-alerts p {
+	border-bottom: 1px dotted #ddd;
+	padding-bottom: 8px;
+	margin-bottom: 8px;
+	font-size: .9em;
+}
+
+.footer {
+	margin: 30px 0 30px;
+}
+
+@media (max-width: 767px) {
+	.col-left {
+		width: 100%;
+		height: 100%;
+		position: fixed;
+		top: 60px;
+		right: 0;
+		bottom: 0;
+		left: -120%;
+		z-index: 1;
+		transition: 0.2s;
+	}
+	.nav-switch {
+		width: 0;
+		height: 0;
+	}
+	.nav-switch:before {
+		display: block;
+		content: 'S';
+		position: fixed;
+		top: 8px;
+		right: 65px;
+		text-align: center;
+		z-index: 9999;
+		font-size: 2em;
+		border: 1px solid #ddd;
+		color: #aaa;
+		border-radius: 4px;
+		line-height: 1.2em;
+		width: 44px;
+		height: 34px;
+		cursor: pointer;
+	}
+	.nav-switch:checked + .col-left {
+		left: 0;
+		transition: 0.2s;
+	}
+	.panel-title a:hover {
+		text-decoration: underline;
+	}
+	
+}
+
+@media (min-width: 767px) {
+
+	.panel-title a:hover {
+		text-decoration: none;
+	}
+}
+
+
+

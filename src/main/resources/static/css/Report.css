@@ -1,0 +1,52 @@
+@CHARSET "UTF-8";
+
+table.result {
+      border-top:1px solid #e5eff8;
+      border-right:1px solid #e5eff8;
+      margin:1em auto;
+      border-collapse:collapse;
+    }
+    
+    .result td {
+      color:#678197;
+      border-bottom:1px solid #e5eff8;
+      border-left:1px solid #e5eff8;
+      padding:.3em 1em;
+      text-align:center;
+    }
+
+    .result tr:nth-child(odd) td {
+      background:#f7fbff;
+    }
+    
+    .result tr:nth-child(odd) td:first-child {
+      background:#f4f9fe;
+    }
+    
+    .result td:first-child {
+      background:#f9fcfe;
+    }
+
+    .result tr:first-child td {
+      background:#f4f9fe;
+      text-align:center;
+      text-size: 1em;
+      font-weight: bold;
+      color:#66a3d3;
+    }
+    
+    .result tr:hover td{
+      background-color: #F3F7FB;
+    }
+    
+    .result tr:nth-child(odd):hover td{
+      background-color: #EFF3F7;
+    }
+
+    .result a:link, a:visited  {
+        color: #678197;
+    }
+    
+    .result a:hover, a:active {
+        color: #3BA8EB;
+    }

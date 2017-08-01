@@ -1,0 +1,709 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>TreeCmp: Comparison of Phylogenetic Trees in Polynomial Time</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+	<link rel="stylesheet" th:href="@{css/treecmp.css}" type="text/css" />
+
+	<style>
+		.form-group .item{white-space: nowrap; display:inline}
+	</style>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="js/bootstrap-treecmp.js"></script>
+    <script src="js/navigation.js"></script>
+	<script src="js/treecompare.js"></script>
+
+</head>
+<body>
+
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse"
+						data-target="#mainmenu"
+						aria-expanded="false">
+					<span class="sr-only">Navigation switch</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">
+					<img alt="TreeCmp" src="img/treecmp_logo.jpg" />
+				</a>
+			</div>
+
+			<div class="collapse navbar-collapse" id="mainmenu">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">Main page</a></li>
+					<li><a href="#">Results</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a></li>
+					<li><a href="#"><span class="glyphicon glyphicon glyphicon-info-sign" aria-hidden="true"></span></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<!-- END OF NAVIGATION BAR -->
+	<!-- MAIN CONTAINER -->
+	<div class="container-fluid">
+
+		<form method="post" th:object="${newickStringNew}" th:action="@{/report}">
+			<div class="row">
+				<div class="col-xs-12 col-xs-offset-0 col-lg-offset-1 main">
+					<div class="form-group">
+						<div class="radio">
+							<label>
+								<input type="radio" th:field="*{comparisionMode}" id="rbMatrix" value="-m" onclick="HideSecondWindow();"/>
+								Matrix comparison
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" th:field="*{comparisionMode}" id="rbBipartite" value="-r" onclick="ShowSecondWindow();"/>
+								Bipartite comparison
+							</label>
+						</div>
+						<div style="margin-left: 15px;">
+							<error th:errors="*{comparisionMode}" cssClass="error" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="row placeholders">
+							<div class="col-xs-12 col-md-6 col-lg-5" id="firstTreeText" style="display: none">
+								<table class="fixed smallMargin" style="display: block;">
+									<tbody>
+									<tr class="row1">
+										<td><b>Newick trees:</b></td>
+										<td class="sidebar-version" style="...">
+											<input type="text" class="treename" for="newickInputFirstFile" id="newickInputFirstLabel" rows="1" placeholder="Untitled" />
+										</td>
+										<td align="right">
+											<input class="smallMargin" id="newickInputFirstFile" type="file" style="display:none" />
+											<button class="btn btn-xs smallMargin" id="newickInputFirstButton" type="button">
+												<span class="glyphicon glyphicon-file"></span>
+											</button>
+										</td>
+									</tr>
+									</tbody>
+								</table>
+								<textarea th:field="*{newickStringFirst}" class="form-control"
+											   rows="14" id="newickInputFirst"
+											   placeholder="Paste or drag and drop your trees in newick format separated by ;" style="resize: none;"></textarea>
+								<div>
+									<errors th:errors="*{newickStringFirst}" class="error" />
+								</div>
+								<div class="exmpBtn smallMargin" id="addExmpTreeToFirstWindow"><a href="#">Example Trees</a></div>
+
+							</div>
+							<div class="col-xs-12 col-md-6 col-lg-5" id="secondTreeText" style="display: none">
+								<table class="fixed smallMargin" style="display: block;">
+									<tbody>
+									<tr class="row1">
+										<td><b>Newick trees:</b></td>
+										<td class="sidebar-version" style="...">
+											<input type="text" class="treename" for="newickInputSecondFile" id="newickInputSecondLabel" rows="1" placeholder="Untitled" />
+										</td>
+										<td align="right">
+											<input class="smallMargin" id="newickInputSecondFile" type="file" style="display:none" />
+											<button class="btn btn-xs smallMargin" id="newickInputSecondButton" type="button">
+												<span class="glyphicon glyphicon-file"></span>
+											</button>
+										</td>
+									</tr>
+									</tbody>
+								</table>
+								<textarea th:field="*{newickStringSecond}" class="form-control"
+											   rows="14" id="newickInputSecond"
+											   placeholder="Paste or drag and drop your trees in newick format separated by ;" style="resize: none;"></textarea>
+								<div>
+									<errors th:errors="*{newickStringSecond}" class="error" />
+								</div>
+								<div class="exmpBtn smallMargin" id="addExmpTreeToSecondWindow"><a href="#">Example Trees</a></div>
+							</div>
+
+							<!--SETTINGS SECTION-->
+							<div class="col-xs-12 col-lg-10">
+								<!--METRICS AND OTHER OPTIONS PANEL-->
+								<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="infoBox1">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
+													Rooted metrics
+												</a>
+											</h4>
+										</div>
+										<div id="collapse1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="infoBox1">
+											<div class="panel-body">
+												<div class="form-group">
+													<div th:each="item, stat : ${rootedMetrics}">
+														<input type="checkbox" th:field="*{rootedMetrics}" th:value="${item.key}" th:text="${item.value}" />
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="panel-heading" role="tab" id="infoBox2">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
+													Unrooted metrics
+												</a>
+											</h4>
+										</div>
+										<div id="collapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="infoBox2">
+											<div class="panel-body">
+												<div class="form-group">
+													<div th:each="item, stat : ${unrootedMetrics}">
+														<input type="checkbox" th:field="*{unrootedMetrics}" th:value="${item.key}" th:text="${item.value}" />
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div>
+										<errors th:errors="*{hasMetrics}" class="error" />
+									</div>
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="infoBox3">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="true" aria-controls="collapse3">
+													Other options
+												</a>
+											</h4>
+										</div>
+										<div id="collapse3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="infoBox3">
+											<div class="panel-body">
+												<div>
+													<input type="checkbox" th:field="*{normalizedDistances}" /> Normalized distances
+												</div>
+												<div>
+													<input type="checkbox" th:field="*{pruneTrees}" /> Prune trees
+												</div>
+												<div>
+													<input type="checkbox" th:field="*{includeSummary}" /> Include summary
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!--END OF METRICS AND OTHER OPTIONS PANEL-->
+							</div>
+							<!--END OF SETTINGS SECTION-->
+						</div>
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary">Compute</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<!-- FOOTER -->
+	<div class="row footer">
+		<div class="col-xs-12 text-center">
+			Gdansk University of Technology &copy; 2017
+		</div>
+	</div>
+	<!-- END OF FOOTER -->
+
+</body>
+
+<script type="text/javascript">
+
+    $("#addExmpTreeToFirstWindow").click(function() {
+        $("#newickInputFirst").val("(15:0.100000,(10:0.100000,(((((12:0.100000,(14:0.100000,4:0.100000):0.100000):0.100000,13:0.100000):0.100000,9:0.100000):0.100000,(2:0.100000,11:0.100000):0.100000):0.100000,(6:0.100000,(8:0.100000,((7:0.100000,5:0.100000):0.100000,3:0.100000):0.100000):0.100000):0.100000):0.100000):0.100000,1:0.100000); ((4:0.150544,((((11:0.065873,13:0.116382):0.033734,12:0.030332):0.040636,15:0.100000):0.033699,14:0.191842):0.130937):0.054639,((8:0.062614,(7:0.125118,(10:0.112016,9:0.148703):0.031571):0.249102):0.041360,((3:0.120344,2:0.100000):0.040487,(5:0.198900,6:0.133571):0.076557):0.044130):0.033153,1:0.191819); ((3:0.088858,2:0.100767):0.025391,((6:0.211435,(4:0.091527,5:0.125414):0.021078):0.075315,(((8:0.081965,((((11:0.040791,13:0.116382):0.058415,12:0.032032):0.042032,15:0.100000):0.027826,14:0.083684):0.092429):0.053057,(10:0.112651,9:0.125479):0.148942):0.044990,7:0.125118):0.075954):0.113318,1:0.256537); ((3:0.094620,2:0.124501):0.023625,((6:0.176744,(4:0.062987,5:0.082446):0.081879):0.074894,(((8:0.081965,(15:0.078628,(((11:0.040791,13:0.078948):0.026857,12:0.021683):0.030356,14:0.074846):0.027642):0.110277):0.038606,(10:0.126379,9:0.125479):0.140897):0.053657,7:0.174578):0.078200):0.065308,1:0.770047); (((6:0.144838,(4:0.056811,5:0.067155):0.103577):0.053721,(((8:0.081965,(10:0.095842,9:0.126998):0.085727):0.032698,(15:0.075916,(((11:0.003119,13:0.078948):0.065246,12:0.021683):0.030678,14:0.068527):0.022510):0.119957):0.017605,7:0.174578):0.097452):0.078951,(3:0.065666,2:0.198511):0.019047,1:0.770047);");
+        $("#newickInputFirstLabel").val('');
+    });
+
+    $("#addExmpTreeToSecondWindow").click(function() {
+        $("#newickInputSecond").val("(((6:0.173548,(4:0.038265,5:0.049616):0.116198):0.088332,(((8:0.107641,(10:0.072825,9:0.046683):0.066314):0.001909,(15:0.060254,(((11:0.036049,13:0.053570):0.033983,12:0.012624):0.058759,14:0.046727):0.001344):0.117593):0.015950,7:0.174578):0.074823):0.078951,(3:0.067359,2:0.228438):0.016452,1:0.517132); (((6:0.093545,(4:0.037183,5:0.049616):0.132727):0.073544,(((8:0.107641,(((13:0.079625,(11:0.036049,12:0.006391):0.003710):0.040924,15:0.043925):0.000917,14:0.033768):0.117593):0.015950,7:0.174578):0.002374,(10:0.072825,9:0.060455):0.077398):0.074823):0.053716,(3:0.067359,2:0.228438):0.016452,1:0.517132); (((6:0.137089,(4:0.037337,5:0.033478):0.064738):0.046526,(((8:0.090471,(15:0.048037,(14:0.026308,(13:0.072127,(11:0.036049,12:0.006391):0.003710):0.030064):0.002327):0.099826):0.013975,(10:0.053709,9:0.042692):0.081041):0.018770,7:0.152105):0.061995):0.054378,(3:0.093893,2:0.274618):0.093609,1:0.598020); (((6:0.137089,(4:0.037337,5:0.033478):0.064738):0.071961,(((8:0.090471,((15:0.048037,((13:0.072127,11:0.002271):0.020950,12:0.003714):0.027415):0.001698,14:0.019536):0.099826):0.014479,(10:0.053709,9:0.045159):0.083035):0.018770,7:0.152105):0.061995):0.041488,(3:0.093893,2:0.385175):0.092249,1:0.604724); (((6:0.164540,(4:0.024112,5:0.021918):0.035415):0.074573,(((8:0.090471,((15:0.046541,14:0.019536):0.005086,((13:0.059860,11:0.002271):0.019525,12:0.002772):0.022829):0.107796):0.014479,(10:0.053709,9:0.045159):0.083035):0.022547,7:0.152105):0.061149):0.038989,(3:0.141203,2:0.385175):0.033726,1:0.604724);");
+        $("#newickInputSecondLabel").val('');
+    });
+
+	/*<![CDATA[*/
+
+    $(document).ready(function() {
+        Hide();
+
+        var rbMatrixMode = document.getElementById('rbMatrix');
+        var rbBipartite = document.getElementById('rbBipartite');
+
+        if (!rbMatrixMode.checked && !rbBipartite.checked) {
+            rbMatrixMode.checked = true;
+        }
+
+        if ($(window).width() <= 768){
+            $('.panel-collapse').removeClass('in');
+        }
+    });
+
+
+    $(window).resize(function(){
+        if ($(window).width() >= 768){
+            OpenWholeAccordion();
+        }
+        if ($(window).width() <= 768){
+            CloseWholeAccordion();
+        }
+    });
+
+    $('a[data-toggle="collapse"]').click(function(e){
+        if ($(window).width() >= 768){
+            e.stopPropagation();
+        }
+    });
+
+    function Hide() {
+        firstTreeText.style.display = 'block';
+        OpenWholeAccordion();
+        if (document.getElementById('rbBipartite').checked) {
+            ShowSecondWindow();
+        }
+        else {
+            HideSecondWindow();
+        }
+    }
+    function OpenWholeAccordion() {
+
+        $("#collapse1").addClass("in");
+        $("#collapse2").addClass("in");
+        $("#collapse3").addClass("in");
+        return;
+    }
+    function CloseWholeAccordion() {
+
+        $("#collapse1").removeClass("in");
+        $("#collapse2").removeClass("in");
+        $("#collapse3").removeClass("in");
+        return;
+    }
+    function ShowSecondWindow() {
+
+        var secondTreeText = document.getElementById('secondTreeText');
+        secondTreeText.style.display = 'block';
+        $("#firstTreeText").removeClass("col-md-12 col-lg-10");
+        $("#firstTreeText").addClass("col-md-6 col-lg-5");
+        return;
+    }
+    function HideSecondWindow() {
+
+        var secondTreeText = document.getElementById('secondTreeText');
+        secondTreeText.style.display = 'none';
+        $("#firstTreeText").removeClass("col-md-6 col-lg-5");
+        $("#firstTreeText").addClass("col-md-12 col-lg-10");
+        return;
+    }
+
+    inputTreeFile("newickInputFirst");
+    inputTreeFile("newickInputSecond");
+
+	/*
+	 Called externally and allows to drag and drop text files for tree input
+	 */
+    function inputTreeFile(newickIn){
+		/*
+		 /
+		 /    Enable drag and drop
+		 /
+		 */
+        var MAX_BYTES = 102400; // 100 KB
+
+        function dragEnter(event) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+
+        function dragExit(event) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+
+        function dragOver(event) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+
+        function drop(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            $("#renderErrorMessage").empty();
+
+            var data = event.dataTransfer;
+            var file = data.files;
+
+            var accept = {
+                text   : ["txt", "nh", "nhx", "nwk", "tre", "tree"]
+            };
+
+            var file_name_tokens = file[0].name.split(".");
+            var file_name_ending = file_name_tokens[file_name_tokens.length-1];
+
+            if (accept.text.indexOf(file_name_ending) > -1){
+                var reader;
+                reader = new FileReader();
+                reader.onload = function(event) {
+                    if(!(checkTreeInput(event.target.result)=="NotNwk")){
+                        $("#" + newickIn).val(event.target.result);
+                        $("#renderErrorMessage").empty();
+                    } else {
+                        $("#renderErrorMessage").empty();
+                        $("#renderErrorMessage").append($('<div class="alert alert-danger" role="alert">This is not a tree file!</div>')).hide().slideDown(300);
+                        $("#" + newickIn).attr("placeholder","Paste your tree or drag and drop your tree file here").val("");
+                    }
+
+                };
+                reader.onloadend = onFileLoaded;
+                reader.readAsText(file[0]);
+                if(file[0].name == "")
+                {
+                    $("#" + newickIn+ "Label").attr("placeholder","Untitled").val("");
+                }
+                else
+                {
+                    $("#" + newickIn + "Label").val(file[0].name);
+                }
+            } else {
+                $("#renderErrorMessage").empty();
+                $("#" + newickIn + "Label").text("No file");
+                $("#renderErrorMessage").append($('<div class="alert alert-danger" role="alert">Only the following file endings are accepted: txt, nh, nhx, nwk, tre, tree</div>')).hide().slideDown(300);
+                //$("#" + newickIn).val("");
+                $("#" + newickIn+ "Label").attr("placeholder","Untitled").val("");
+                $("#" + newickIn).attr("placeholder","Paste your tree or drag and drop your tree file here").val("");
+            }
+
+            // object for allowed media types
+
+        }
+
+        function onFileLoaded(event) {
+            event.currentTarget.result.substr(0, MAX_BYTES);
+        }
+
+        var dropArea = $("#" + newickIn).get(0);
+
+        dropArea.addEventListener("dragenter", dragEnter, false);
+        dropArea.addEventListener("dragexit", dragExit, false);
+        dropArea.addEventListener("dragover", dragOver, false);
+        dropArea.addEventListener("drop", drop, false);
+
+		/*
+		 /
+		 /    Enable file input using button
+		 /
+		 */
+        var newickInButton = document.getElementById(newickIn+"Button");
+        var control = document.getElementById(newickIn+"File");
+        newickInButton.addEventListener('click',function(event){
+            event.preventDefault();
+            control.click();
+            //$(this).find('span').toggleClass('glyphicon-file').toggleClass('glyphicon-remove');
+        },false);
+
+
+        control.addEventListener("change", function(event) {
+
+            // When the control has changed, there are new files
+
+            var file = control.files;
+
+
+            var accept = {
+                text   : ["txt", "nh", "nhx", "nwk", "tre", "tree"]
+            };
+
+            var file_name_tokens = file[0].name.split(".");
+            var file_name_ending = file_name_tokens[file_name_tokens.length-1];
+
+            if (accept.text.indexOf(file_name_ending) > -1){
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    if(!(checkTreeInput(event.target.result)=="NotNwk")){
+                        $("#" + newickIn).val(event.target.result);
+                        $("#renderErrorMessage").empty();
+                    } else {
+                        $("#renderErrorMessage").empty();
+                        $("#renderErrorMessage").append($('<div class="alert alert-danger" role="alert">This is not a tree file!</div>')).hide().slideDown(300);
+                        $("#" + newickIn+ "Label").attr("placeholder","Untitled").val("");
+                        $("#" + newickIn).attr("placeholder","Paste your tree or drag and drop your tree file here").val("");
+                    }
+
+                };
+                reader.onloadend = onFileLoaded;
+                reader.readAsText(file[0]);
+                if(file[0].name == "")
+                {
+                    $("#" + newickIn+ "Label").attr("placeholder","Untitled").val("");
+                }
+                else
+                {
+                    $("#" + newickIn + "Label").val(file[0].name);
+                }
+
+            } else {
+                $("#renderErrorMessage").empty();
+                $("#renderErrorMessage").append($('<div class="alert alert-danger" role="alert">Only the following file endings are accepted: txt, nh, nhx, nwk, tre, tree</div>')).hide().slideDown(300);
+                //$("#" + newickIn).val("");
+                $("#" + newickIn+ "Label").attr("placeholder","Untitled").val("");
+                $("#" + newickIn).attr("placeholder","Paste your tree or drag and drop your tree file here").val("");
+            }
+
+
+        }, false);
+
+    }
+
+	/*
+	 Called externally to convert a tree and add to internal tree structure
+	 */
+    function addTree(newick, name) {
+
+        //add required parameters to each node
+        postorderTraverse(tree, function(d) {
+            d.ID = makeId("node_");
+            d.leaves = getChildLeaves(d);
+            d.clickedParentHighlight = false;
+            d.mouseoverHighlight = false; //when mouse is over node
+            d.mouseoverLinkHighlight = false; //when mouse is over branch between two nodes
+            d.correspondingHighlight = false;
+            d.collapsed = false; //variable to obtain the node/nodes where collapsing starts
+        });
+
+        var root_ID = makeId("node_");
+        for (var i = 0; i < tree.children.length; i++){
+            tree.children[i].ID = root_ID;
+        }
+
+        var fullTree = {
+            root: tree,
+            name: name,
+            data: {}
+        };
+        fullTree.data.autoCollapseDepth = getRecommendedAutoCollapse(tree);
+
+        trees.push(fullTree);
+
+        return fullTree;
+    }
+
+	/*
+	 Newick to JSON converter, just copied code from newick.js
+	 */
+    function convertTree(s) { //s is newick file format
+        var ancestors = [];
+        var tree = {};
+
+        s = s.replace(/(\r\n|\n|\r)/gm,""); // remove all new line characters
+
+        var tokens = s.split(/\s*(;|\(|\[|\]|\)|,|:)\s*/); //already splits the NHX format as well
+
+        function getIdxToken(tokenArray, queryToken){
+            var posTokens = [];
+            for (var i = 0; i < tokenArray.length; i++){
+                if (tokenArray[i] == queryToken){
+                    posTokens.push(i)
+                }
+
+            }
+            return posTokens;
+        }
+
+        // the following part keeps the NHX datastructure
+        var square_bracket_start = getIdxToken(tokens,"[");
+        var square_bracket_end = getIdxToken(tokens,"]");
+        var new_tokens = [];
+        var j = 0;
+        for (var i = 0; i < tokens.length; i++){
+            if (tokens[i] == "["){
+                var dist_square_bracket = square_bracket_end[j] - square_bracket_start[j];
+                new_tokens.push(tokens[i]);
+                new_tokens.push(tokens.slice(i+1,i+dist_square_bracket).join(""));
+                new_tokens.push(tokens[i+dist_square_bracket]);
+                i = i + dist_square_bracket;
+                j = j + 1;
+            }else{
+                new_tokens.push(tokens[i]);
+            }
+        }
+
+        try { //catch error when newick is not in place
+            if (tokens=="") throw "empty";// calls convert function from above
+        } catch (err) {
+            throw "NoTree";
+        }
+
+        try {
+            if (checkTreeInput(s)=="TooLittle)") throw "empty"; // TODO:change this to &&NHX and not []
+        } catch (err) {
+            throw "TooLittle)"
+        }
+
+        try {
+            if (checkTreeInput(s)=="TooLittle(") throw "empty"; // TODO:change this to &&NHX and not []
+        } catch (err) {
+            throw "TooLittle("
+        }
+
+
+        function check_nhx_variable(nhx_array, string_to_check){
+            var found_pos = -1;
+            for (var i = 0; i < nhx_array.length; i++){
+                if (nhx_array[i].indexOf(string_to_check)!=-1){
+                    found_pos = i;
+                }
+            }
+
+            return found_pos;
+        }
+
+        for (var i = 0; i < new_tokens.length; i++) {
+            var token = new_tokens[i];
+            switch (token) {
+                case '(': // new children
+                    var subtree = {};
+                    tree.children = [subtree];
+                    ancestors.push(tree);
+                    tree = subtree;
+                    break;
+                case ',': // another branch
+                    var subtree = {};
+                    ancestors[ancestors.length - 1].children.push(subtree);
+                    tree = subtree;
+                    break;
+                case '['://TODO: input NHX format
+                    var x = new_tokens[i + 1];
+                    if (x.indexOf("&&NHX")!=-1){ //if NHX format
+                        var nhx_tokens = x.split(/:/);
+                        var tmp_idx = check_nhx_variable(nhx_tokens, "B=");
+                        if (tmp_idx!=-1){
+                            var branchSupport = nhx_tokens[tmp_idx].split("=");
+                            tree.branchSupport = branchSupport[1];
+                        }
+
+                    }else{
+                        if (!(x===";" || x==="")){
+                            tree.branchSupport = x;
+                        }
+                    }
+                    break;
+                case ']':
+                    //var x = new_tokens[i - 1];
+                    //tree.branchSupport = x;
+                    break;
+                case ')': // optional
+                    tree = ancestors.pop();
+                    var x = new_tokens[i + 1];
+                    if (!(x===";" || x==="")){
+                        tree.branchSupport = x;
+                    }
+                    break;
+                case ':': // optional length next
+                    break;
+                default:
+                    var x = new_tokens[i - 1];
+                    if (x == ')' || x == '(' || x == ',') {
+                        var tree_meta = token.split("@@"); // separation of metadata for export
+                        tree.name = tree_meta[0];
+                        tree.length = 0.1; // this is used in the case the tree does not have any branch values
+                        if(tree_meta.indexOf("collapsed")!==-1){
+                            tree.collapsed = true;
+                        }else{
+                            tree.collapsed = false;
+                        }
+                        if(tree_meta.indexOf("clickedParentHighlight")!==-1){
+                            tree.clickedParentHighlight = true;
+                        }
+                        if(tree_meta.indexOf("correspondingHighlight")!==-1) {
+                            tree.correspondingHighlight = true;
+                        }
+                        if(tree_meta.indexOf("bcnhighlight")!==-1) {
+                            tree.bcnhighlight = true;
+                        }
+                        if(tree_meta.indexOf("clickedHighlight")!==-1){
+                            tree.clickedHighlight = true;
+                        }
+                    } else if (x == ':') {
+                        tree.length = parseFloat(token);
+                    }
+            }
+        }
+        return tree;
+    }
+
+	/*
+	 This function checks the consistency of the input string for the tree
+	 */
+    function checkTreeInput(s){
+        var tokens = s.split(/\s*(;|\(|\[|\]|\)|,|:)\s*/);
+        var outError = "";
+
+        function returnNumElementInArray(inArray,element){
+            var numOfTrue = 0;
+            for(var i=0;i<inArray.length;i++){
+                if(inArray[i] === element)
+                    numOfTrue++;
+            }
+            return numOfTrue;
+        }
+        if (returnNumElementInArray(tokens,"(") > returnNumElementInArray(tokens,")")){
+            outError = "TooLittle)";
+        } else if (returnNumElementInArray(tokens,"(") < returnNumElementInArray(tokens,")")){
+            outError = "TooLittle(";
+        } else if (tokens.indexOf(":") == -1 || tokens.indexOf("(") == -1 || tokens.indexOf(")") == -1){
+            outError = "NotNwk"
+        } else if (isNaN(tokens[tokens.indexOf(":")+1])){
+            outError = "NotNwk"
+        }
+
+        return outError;
+    }
+
+	/*
+	 traverses and performs function f on treenodes in postorder
+	 if do_children === false, doesn't traverse _children, only children
+	 _children means the children are not visible in the visualisation, i.e they are collapsed
+	 */
+    function postorderTraverse(d, f, do_children) {
+        if (do_children === undefined) { //check whether variable is defined, e.g. string, integer ...
+            do_children = true;
+        }
+        var children = [];
+        if (do_children) {
+            var children = getChildren(d);
+        } else {
+            if (d.children) {
+                children = d.children;
+            }
+        }
+        if (children.length > 0) {
+            for (var i = 0; i < children.length; i++) {
+                postorderTraverse(children[i], f, do_children);
+            }
+            f(d);
+            return;
+
+        } else {
+            f(d);
+            return;
+        }
+    }
+
+	/*
+	 Function that returns unvisible children or visible children if one or the other are given as input
+	 */
+    function getChildren(d) {
+        return d._children ? d._children : (d.children ? d.children : []);
+    }
+
+	/*]]>*/
+
+</script>
+
+</html>
