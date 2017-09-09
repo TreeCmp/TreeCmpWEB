@@ -1,9 +1,10 @@
 package pl.gda.pg.eti.controller;
 
 import java.io.*;
-import java.net.URLDecoder;
+
 import treecmp.command.Command;
 import treecmp.commandline.CommandLineParser;
+import treecmp.common.ReportUtils;
 import treecmp.common.TimeDate;
 import treecmp.common.TreeCmpException;
 import treecmp.config.ActiveMetricsSet;
@@ -94,6 +95,9 @@ public class TreeCmpExecutor {
 			out.isWriteToFile(true);
 			out.setFileName(settings.getOutputFile());
 			cmd.setOut(out);
+
+			ReportUtils.updete();
+
 			try {
 				cmd.run();
 			} catch (TreeCmpException ex) {
