@@ -170,15 +170,28 @@ public class NewickController {
 		File inputFile = nu.createTempFileWithGivenContent(newick.getNewickStringFirst());
 		File refTreeFile = null;
 
-		if (newick.getComparisionMode().equals(NewickUtils.MATRIX_COMPARISION_MODE)) {
+		if (newick.getComparisionMode().equals(NewickUtils.WINDOW_COMPARISION_MODE)) {
+			arguments.add(NewickUtils.WINDOW_COMPARISION_MODE);
+			comparisionMode = Mode.WINDOW;
+			arguments.add(String.format("%s", newick.getWindowWidth()));
+			String normalizedFirstNewick = NewickUtils.GetNormalizedNewickString(newick.getNewickStringFirst());
+			splitter = new NewickSplitter(normalizedFirstNewick);
+		}
+		else if (newick.getComparisionMode().equals(NewickUtils.MATRIX_COMPARISION_MODE)) {
 			arguments.add(NewickUtils.MATRIX_COMPARISION_MODE);
 			comparisionMode = Mode.MATRIX;
 			String normalizedFirstNewick = NewickUtils.GetNormalizedNewickString(newick.getNewickStringFirst());
 			splitter = new NewickSplitter(normalizedFirstNewick);
-
-		} else if (newick.getComparisionMode().equals(NewickUtils.BIPARTITE_COMPARISION_MODE)) {
-			arguments.add(NewickUtils.BIPARTITE_COMPARISION_MODE);
-			comparisionMode = Mode.BIPARTITE;
+		}
+		else if (newick.getComparisionMode().equals(NewickUtils.OVERLAPPING_PAIR_COMPARISION_MODE)) {
+			arguments.add(NewickUtils.OVERLAPPING_PAIR_COMPARISION_MODE);
+			comparisionMode = Mode.OVERLAPPING_PAIR;
+			String normalizedFirstNewick = NewickUtils.GetNormalizedNewickString(newick.getNewickStringFirst());
+			splitter = new NewickSplitter(normalizedFirstNewick);
+		}
+		else if (newick.getComparisionMode().equals(NewickUtils.REF_TO_ALL_COMPARISION_MODE)) {
+			arguments.add(NewickUtils.REF_TO_ALL_COMPARISION_MODE);
+			comparisionMode = Mode.REF_TO_ALL;
 			refTreeFile = nu.createTempFileWithGivenContent(newick.getNewickStringSecond());
 
 			String normalizedFirstNewick = NewickUtils.GetNormalizedNewickString(newick.getNewickStringFirst());
@@ -188,7 +201,6 @@ public class NewickController {
 
 			arguments.add(String.format("%s", refTreeFile.getAbsolutePath()));
 		}
-
 
 		NewickValidator newickVal = new NewickValidator(newick);
 

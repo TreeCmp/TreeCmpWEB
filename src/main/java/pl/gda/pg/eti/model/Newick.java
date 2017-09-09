@@ -22,6 +22,8 @@ public class Newick {
 	
 	private String comparisionMode = "";
 
+	private Integer windowWidth;
+
 	private String inputType = "stringInput";
 	
 	private boolean hasMetrics;
@@ -114,15 +116,13 @@ public class Newick {
 		return inputType;
 	}
 
-	public void setInputType(String inputType) {
-		this.inputType = inputType;
-	}
+	public void setInputType(String inputType) { this.inputType = inputType; }
 
-	public String getComparisionMode() {
-		return comparisionMode;
-	}
+	public String getComparisionMode() { return comparisionMode; }
 
-	public void setComparisionMode(String comparisionMode) {
-		this.comparisionMode = comparisionMode;
-	}
+	public void setComparisionMode(String comparisionMode) { this.comparisionMode = comparisionMode; }
+
+	public Integer getWindowWidth() { return windowWidth; }
+
+	public void setWindowWidth(Integer windowWidth) { this.windowWidth = windowWidth; }
 }

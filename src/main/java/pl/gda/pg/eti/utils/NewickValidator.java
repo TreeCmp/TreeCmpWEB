@@ -13,7 +13,10 @@ import org.forester.io.parsers.util.ParserUtils;
 import org.forester.phylogeny.Phylogeny;
 
 public class NewickValidator {
-	
+
+	public Integer MIN_WINDOW_VAL = 1;
+	public Integer MAX_WINDOW_VAL = 99;
+
 	private String comparisionFileLoc;
 	private String refTreeFileLoc;
 	private Newick newick;
@@ -37,6 +40,7 @@ public class NewickValidator {
 		}
 		validateMetrics();
 		validateSelectedMode();
+		validateWindowWidthInput();
 		validateInput();
 	}
 	
@@ -51,20 +55,34 @@ public class NewickValidator {
 		if (newick.getInputType() != null && newick.getInputType().equals(NewickUtils.STRING_INPUT)) {
 			validateInputString(newick.getNewickStringFirst(), "newickStringFirst", comparisionFileLoc);
 			
-			if (newick.getComparisionMode().equals(NewickUtils.BIPARTITE_COMPARISION_MODE)) {
+			if (newick.getComparisionMode().equals(NewickUtils.REF_TO_ALL_COMPARISION_MODE)) {
 				validateInputString(newick.getNewickStringSecond(), "newickStringSecond", refTreeFileLoc);
 			}
 		} else if (newick.getInputType() != null && newick.getInputType().equals(NewickUtils.FILE_INPUT)) {
 		}
 	}
-	
+
 	private void validateSelectedMode() {
 		if (newick.getComparisionMode() == null || newick.getComparisionMode().isEmpty()) {
 			ObjectError objError = new FieldError("newick", "comparisionMode", "At least one mode must be choosen.");
 			newickErrors.add(objError);
 		}
 	}
-	
+
+	private void validateWindowWidthInput() {
+		if (newick.getComparisionMode().equals(NewickUtils.WINDOW_COMPARISION_MODE)) {
+			if (newick.getWindowWidth() == null || !validateWindowWidth(newick.getWindowWidth())) {
+				ObjectError objError = new FieldError("newick", "comparisionMode", "Window width must be between " + MIN_WINDOW_VAL + " and " + MAX_WINDOW_VAL);
+				newickErrors.add(objError);
+			}
+		}
+	}
+
+	private boolean validateWindowWidth(Integer ww) {
+		if (ww < MIN_WINDOW_VAL || ww > MAX_WINDOW_VAL) return false;
+		return true;
+	}
+
 	private void validateInputString(String inputString, String fieldName, String fileLoc) {
 		ObjectError objError = null;
 		if (inputString.isEmpty()) {

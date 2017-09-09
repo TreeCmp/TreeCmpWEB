@@ -61,18 +61,31 @@
 					<div class="form-group">
 						<div class="radio">
 							<label>
-								<input type="radio" th:field="*{comparisionMode}" id="rbMatrix" value="-m" onclick="HideSecondWindow();"/>
+								<input type="radio" th:field="*{comparisionMode}" id="rbWindow" value="-w" onclick="HideSecondWindowAndShowNumberInput();"/>
+								Window comparison
+								<input type="number" th:field="*{windowWidth}" id="rbWindowWidthInput" min="1" max="99" value="2"/>
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" th:field="*{comparisionMode}" id="rbMatrix" value="-m" onclick="HideSecondWindowAndHideNumberInput();"/>
 								Matrix comparison
 							</label>
 						</div>
 						<div class="radio">
 							<label>
-								<input type="radio" th:field="*{comparisionMode}" id="rbBipartite" value="-r" onclick="ShowSecondWindow();"/>
-								Bipartite comparison
+								<input type="radio" th:field="*{comparisionMode}" id="rbOverlapping" value="-s" onclick="HideSecondWindowAndHideNumberInput();"/>
+								Overlapping pair comparison
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" th:field="*{comparisionMode}" id="rbRefToAll" value="-r" onclick="ShowSecondWindowAndHideNumberInput();"/>
+								Ref-to-all comparison
 							</label>
 						</div>
 						<div style="margin-left: 15px;">
-							<error th:errors="*{comparisionMode}" cssClass="error" />
+							<errors th:errors="*{comparisionMode}" class="error" />
 						</div>
 					</div>
 
@@ -233,11 +246,13 @@
     $(document).ready(function() {
         Hide();
 
-        var rbMatrixMode = document.getElementById('rbMatrix');
-        var rbBipartite = document.getElementById('rbBipartite');
+        var rbWindow = document.getElementById('rbWindow');
+        var rbMatrix = document.getElementById('rbMatrix');
+        var rbOverlapping = document.getElementById('rbOverlapping');
+        var rbRefToAll = document.getElementById('rbRefToAll');
 
-        if (!rbMatrixMode.checked && !rbBipartite.checked) {
-            rbMatrixMode.checked = true;
+        if (!rbWindow.checked &&  !rbMatrix.checked && !rbOverlapping.checked && !rbRefToAll.checked) {
+            rbMatrix.checked = true;
         }
 
         if ($(window).width() <= 768){
@@ -263,12 +278,16 @@
 
     function Hide() {
         firstTreeText.style.display = 'block';
+        document.getElementById('rbWindowWidthInput').style.display = 'none';
         OpenWholeAccordion();
-        if (document.getElementById('rbBipartite').checked) {
-            ShowSecondWindow();
+        if (document.getElementById('rbRefToAll').checked) {
+            ShowSecondWindowAndHideNumberInput();
+        }
+        else if (document.getElementById('rbWindow').checked) {
+            HideSecondWindowAndShowNumberInput();
         }
         else {
-            HideSecondWindow();
+            HideSecondWindowAndHideNumberInput();
         }
     }
     function OpenWholeAccordion() {
@@ -285,22 +304,46 @@
         $("#collapse3").removeClass("in");
         return;
     }
-    function ShowSecondWindow() {
+    function ShowSecondWindowAndHideNumberInput() {
 
         var secondTreeText = document.getElementById('secondTreeText');
         secondTreeText.style.display = 'block';
         $("#firstTreeText").removeClass("col-md-12 col-lg-10");
         $("#firstTreeText").addClass("col-md-6 col-lg-5");
+        HideNumberInput();
         return;
     }
-    function HideSecondWindow() {
+    function HideSecondWindowAndHideNumberInput() {
 
         var secondTreeText = document.getElementById('secondTreeText');
         secondTreeText.style.display = 'none';
         $("#firstTreeText").removeClass("col-md-6 col-lg-5");
         $("#firstTreeText").addClass("col-md-12 col-lg-10");
+        HideNumberInput();
         return;
     }
+
+    function HideSecondWindowAndShowNumberInput() {
+
+        HideSecondWindowAndHideNumberInput();
+        ShowNumberInput();
+        return;
+    }
+
+
+    function ShowNumberInput() {
+        var numberInput = document.getElementById('rbWindowWidthInput');
+        numberInput.style.display = 'inline-block';
+        return;
+    }
+
+
+    function HideNumberInput() {
+        var numberInput = document.getElementById('rbWindowWidthInput');
+        numberInput.style.display = 'none';
+        return;
+    }
+
 
     inputTreeFile("newickInputFirst");
     inputTreeFile("newickInputSecond");

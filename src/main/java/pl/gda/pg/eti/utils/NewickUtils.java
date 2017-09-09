@@ -10,9 +10,11 @@ import java.util.Date;
 
 
 public class NewickUtils {
-	
+
+	public static String WINDOW_COMPARISION_MODE = "-w";
 	public static String MATRIX_COMPARISION_MODE = "-m";
-	public static String BIPARTITE_COMPARISION_MODE = "-r";
+	public static String OVERLAPPING_PAIR_COMPARISION_MODE = "-s";
+	public static String REF_TO_ALL_COMPARISION_MODE = "-r";
 	public static String STRING_INPUT = "stringInput";
 	public static String FILE_INPUT = "fileInput";
 	
