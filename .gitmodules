@@ -2,10 +2,6 @@
 	path = src/main/java/pal
 	url = https://github.com/TreeCmp/pal.git
 	branch = src
-[submodule "src/main/java/treecmp"]
-	path = src/main/java/treecmp
-	url = https://github.com/TreeCmp/TreeCmp
-	branch = src
 [submodule "src/main/resources/static/config"]
 	path = src/main/resources/static/config
 	url = https://github.com/TreeCmp/TreeCmp
@@ -14,3 +10,7 @@
 	path = src/main/resources/static/data
 	url = https://github.com/TreeCmp/TreeCmp
 	branch = data
+[submodule "src/main/java/treecmp"]
+	path = src/main/java/treecmp
+	url = https://github.com/TreeCmp/TreeCmp
+	branch = src
