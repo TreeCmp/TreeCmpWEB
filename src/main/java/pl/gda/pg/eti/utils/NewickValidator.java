@@ -14,7 +14,7 @@ import org.forester.phylogeny.Phylogeny;
 
 public class NewickValidator {
 
-	public Integer MIN_WINDOW_VAL = 1;
+	public Integer MIN_WINDOW_VAL = 2;
 	public Integer MAX_WINDOW_VAL = 99;
 
 	private String comparisionFileLoc;

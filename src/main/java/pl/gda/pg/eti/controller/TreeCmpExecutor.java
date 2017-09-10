@@ -96,7 +96,7 @@ public class TreeCmpExecutor {
 			out.setFileName(settings.getOutputFile());
 			cmd.setOut(out);
 
-			ReportUtils.updete();
+			ReportUtils.update();
 
 			try {
 				cmd.run();
