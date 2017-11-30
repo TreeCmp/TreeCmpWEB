@@ -1,4 +1,4 @@
-package pl.gda.pg.eti;
+package pl.edu.pg.eti;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

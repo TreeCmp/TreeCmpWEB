@@ -1,4 +1,4 @@
-package pl.gda.pg.eti;
+package pl.edu.pg.eti;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,7 +12,7 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "pl.gda.pg.eti")
+@ComponentScan(basePackages = "pl.edu.pg.eti")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override

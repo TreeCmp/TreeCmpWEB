@@ -1,4 +1,4 @@
-package pl.gda.pg.eti.controller;
+package pl.edu.pg.eti.controller;
 
 import java.io.*;
 

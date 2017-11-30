@@ -1,4 +1,4 @@
-package pl.gda.pg.eti.utils;
+package pl.edu.pg.eti.utils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
-import pl.gda.pg.eti.model.Newick;
+import pl.edu.pg.eti.model.Newick;
 
 import org.forester.io.parsers.util.ParserUtils;
 import org.forester.phylogeny.Phylogeny;

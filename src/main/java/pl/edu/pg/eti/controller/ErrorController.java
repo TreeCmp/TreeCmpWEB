@@ -1,4 +1,4 @@
-package pl.gda.pg.eti.controller;
+package pl.edu.pg.eti.controller;
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ControllerAdvice;

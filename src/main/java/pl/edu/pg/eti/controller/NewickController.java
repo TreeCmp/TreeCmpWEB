@@ -1,4 +1,4 @@
-package pl.gda.pg.eti.controller;
+package pl.edu.pg.eti.controller;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -28,14 +28,14 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 
 import org.thymeleaf.util.DateUtils;
-import pl.gda.pg.eti.model.JsonTrees;
-import pl.gda.pg.eti.model.Mode;
-import pl.gda.pg.eti.model.Newick;
-import pl.gda.pg.eti.utils.ConfigParser;
-import pl.gda.pg.eti.utils.HtmlUtils;
-import pl.gda.pg.eti.utils.NewickSplitter;
-import pl.gda.pg.eti.utils.NewickUtils;
-import pl.gda.pg.eti.utils.NewickValidator;
+import pl.edu.pg.eti.model.JsonTrees;
+import pl.edu.pg.eti.model.Mode;
+import pl.edu.pg.eti.model.Newick;
+import pl.edu.pg.eti.utils.ConfigParser;
+import pl.edu.pg.eti.utils.HtmlUtils;
+import pl.edu.pg.eti.utils.NewickSplitter;
+import pl.edu.pg.eti.utils.NewickUtils;
+import pl.edu.pg.eti.utils.NewickValidator;
 
 @Controller
 @Scope("session")

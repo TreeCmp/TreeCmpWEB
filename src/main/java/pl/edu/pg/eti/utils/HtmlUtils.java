@@ -1,4 +1,4 @@
-package pl.gda.pg.eti.utils;
+package pl.edu.pg.eti.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

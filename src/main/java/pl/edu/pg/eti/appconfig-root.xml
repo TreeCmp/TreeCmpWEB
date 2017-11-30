@@ -9,7 +9,7 @@
     <import resource="appconfig-mvc.xml"/>
 
     <!-- Scans within the base package of the application for @Component classes to configure as beans -->
-    <context:component-scan base-package="pl.gda.pg.eti.*"/>
+    <context:component-scan base-package="pl.edu.pg.eti.*"/>
 
     <context:property-placeholder location="classpath:application.properties"/>
 

@@ -1,4 +1,4 @@
-package pl.gda.pg.eti.model;
+package pl.edu.pg.eti.model;
 
 import java.util.Map;
 
