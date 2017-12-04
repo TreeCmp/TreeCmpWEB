@@ -175,7 +175,7 @@ public class HtmlUtils {
 		String firstTreeId = ids[0];
 		String secondTreeId = ids[1];
 
-		return "<button type=\"button\" name=\"treesId\" value=\""+ value + "\" onclick=\"popup("+ firstTreeId + "," + secondTreeId + ")\" class=\"btn\" \">Phylo.io</button>";
+		return "<button type=\"button\" name=\"treesId\" value=\""+ value + "\" onclick=\"popup("+ firstTreeId + "," + secondTreeId + ")\" class=\"btn\" >Phylo.io</button>";
 	}
 
 	private final String table_separator = "---------";

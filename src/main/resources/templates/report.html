@@ -15,9 +15,28 @@
     <script src="js/jquery.tablesorter.js"></script>
 
     <script type="text/javascript">
+
+        var reportSaved = true;
+
         $(function() {
             $("#reportTable").tablesorter();
         });
+
+        window.onbeforeunload = function(e) {
+            if (reportSaved == true){
+                var dialogText = 'Unsaved report. Do you want to leave this site?';
+                e.returnValue = dialogText;
+                return dialogText;
+            }
+            else {
+                return null;
+            }
+        };
+
+        function saveReport() {
+            reportSaved = null;
+        }
+
     </script>
 
 </head>
@@ -60,6 +79,7 @@
             <div th:utext="${metric}" />
         </div>
     </div>
+    <button class="btn btn-primary" onclick="saveReport()" >Save report</button>
 </div>
 <!-- FOOTER -->
 <div class="row footer">
