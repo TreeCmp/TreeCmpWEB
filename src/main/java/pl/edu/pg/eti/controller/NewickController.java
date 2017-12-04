@@ -58,7 +58,7 @@ public class NewickController {
 
 	private NewickSplitter splitter;
 	private NewickSplitter referencedTreesSplitter;
-	private String reportStr;
+    private static String rawReport;
 	private Mode comparisionMode;
 
 	private static String configFile = "";
@@ -271,8 +271,8 @@ public class NewickController {
 			Scanner outputFileScanner = new Scanner(new File(outputFilePath));
 
 			if(outputFileScanner.hasNext()) {
-				reportStr = outputFileScanner.useDelimiter("\\Z").next();
-				String myReport = htmlUtils.GenerateReportTable(reportStr, includeSummary);
+                rawReport = outputFileScanner.useDelimiter("\\Z").next();
+				String myReport = htmlUtils.GenerateReportTable(rawReport, includeSummary);
 				model.addAttribute("report", myReport);
 			}
 			else {
@@ -284,6 +284,11 @@ public class NewickController {
 		}
 	}
 
+	@RequestMapping(value="/rawReport", method=RequestMethod.POST)
+    public @ResponseBody String rawReport() {
+        return rawReport;
+    }
+
 	@RequestMapping(value = "/trees/", method = RequestMethod.GET)
 	public ModelAndView visualizeTrees(@RequestParam Map<String, String> treesIds, Model model) {
 		try	{
@@ -293,7 +298,7 @@ public class NewickController {
 			int secondTreeId = Integer.parseInt(treesIds.get("secondTreeId"));
 			model.addAttribute("secondTreeId", secondTreeId);
 
-			String shortTable = htmlUtils.GenerateShortenedReport(reportStr, firstTreeId, secondTreeId);
+			String shortTable = htmlUtils.GenerateShortenedReport(rawReport, firstTreeId, secondTreeId);
 			model.addAttribute("shortTable", shortTable);
 		}
 		catch(Exception e) {
@@ -304,13 +309,13 @@ public class NewickController {
 
 	@RequestMapping(value="/trees", method=RequestMethod.POST)
 	public @ResponseBody JsonTrees provideTree(@RequestBody final JsonTrees tree) {
-		if(comparisionMode == Mode.MATRIX) {
-			tree.firstTreeNewick = splitter.GetTree(tree.firstTreeId-1);
-			tree.secondTreeNewick = splitter.GetTree(tree.secondTreeId-1);
-		}
-		else {
+		if(comparisionMode == Mode.REF_TO_ALL) {
 			tree.firstTreeNewick = splitter.GetTree(tree.secondTreeId-1);
 			tree.secondTreeNewick = referencedTreesSplitter.GetTree(tree.firstTreeId-1);
+		}
+		else {
+			tree.firstTreeNewick = splitter.GetTree(tree.firstTreeId-1);
+			tree.secondTreeNewick = splitter.GetTree(tree.secondTreeId-1);
 		}
 
 		return tree;

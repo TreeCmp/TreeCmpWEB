@@ -6,7 +6,7 @@ public class NewickSplitter {
 	
 	private String newick;
 	private ArrayList<String> trees;
-	
+
 	public NewickSplitter(String newickContent) {
 		newick = newickContent;
 		splitTrees();
@@ -52,11 +52,11 @@ public class NewickSplitter {
 		
 		return nextTree;
 	}
-	
+
 	private String javascriptTable(ArrayList<String> array) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("[");
-		
+
 		for(int i = 0; i < array.size(); i++) {
 			buffer.append("\"").append(array.get(i)).append("\"");
 			

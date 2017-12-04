@@ -16,14 +16,14 @@
 
     <script type="text/javascript">
 
-        var reportSaved = true;
+        var reportStstus = { unsaved: true };
 
         $(function() {
             $("#reportTable").tablesorter();
         });
 
         window.onbeforeunload = function(e) {
-            if (reportSaved == true){
+            if (reportStstus.unsaved == true){
                 var dialogText = 'Unsaved report. Do you want to leave this site?';
                 e.returnValue = dialogText;
                 return dialogText;
@@ -79,7 +79,8 @@
             <div th:utext="${metric}" />
         </div>
     </div>
-    <button class="btn btn-primary" onclick="saveReport()" >Save report</button>
+    <button type="button" name="saveRep" class="btn btn-primary" onclick="getReport(reportStstus)" >Save report</button>
+
 </div>
 <!-- FOOTER -->
 <div class="row footer">
