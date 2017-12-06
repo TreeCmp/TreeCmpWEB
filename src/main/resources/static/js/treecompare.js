@@ -42,7 +42,9 @@ var TreeCompare = function(){
      ['rgb(0,33,229)', 'rgb(70,8,225)', 'rgb(162,16,221)', 'rgb(218,24,190)', 'rgb(214,31,110)', 'rgb(210,39,39)'];
      */
     //grey - black
-    var colorScaleRange = ['rgb(37,52,148)', 'rgb(44,127,184)', 'rgb(65,182,196)', 'rgb(127,205,187)', 'rgb(199,233,180)', 'rgb(255,255,204)'];
+    //var colorScaleRange = ['rgb(37,52,148)', 'rgb(44,127,184)', 'rgb(65,182,196)', 'rgb(127,205,187)', 'rgb(199,233,180)', 'rgb(255,255,204)'];
+    //only Egyptian Blue
+    var colorScaleRange = ['rgb(37,52,148)', 'rgb(37,52,148)', 'rgb(37,52,148)', 'rgb(37,52,148)', 'rgb(37,52,148)', 'rgb(37,52,148)'];
     var colorScaleRangeRest = ['rgb(179,0,0)', 'rgb(227,74,51)', 'rgb(252,141,89)', 'rgb(253,187,132)', 'rgb(253,212,158)', 'rgb(254,240,217)'];
 
     var colorScaleDomain = [1, 0.8, 0.6, 0.4, 0.2, 0];
