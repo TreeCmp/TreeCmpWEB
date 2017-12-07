@@ -1,46 +1,36 @@
 package pl.edu.pg.eti.controller;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.embedded.LocalServerPort;
+import org.springframework.context.annotation.Scope;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.util.DateUtils;
+import pl.edu.pg.eti.model.JsonTrees;
+import pl.edu.pg.eti.model.Mode;
+import pl.edu.pg.eti.model.Newick;
+import pl.edu.pg.eti.utils.*;
+
+import javax.annotation.PostConstruct;
+import javax.validation.Valid;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-import javax.servlet.ServletContext;
-import javax.validation.Valid;
-
-import org.springframework.boot.*;
-import org.springframework.boot.autoconfigure.*;
-import org.springframework.core.io.ClassPathResource;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-
-import org.thymeleaf.util.DateUtils;
-import pl.edu.pg.eti.model.JsonTrees;
-import pl.edu.pg.eti.model.Mode;
-import pl.edu.pg.eti.model.Newick;
-import pl.edu.pg.eti.utils.ConfigParser;
-import pl.edu.pg.eti.utils.HtmlUtils;
-import pl.edu.pg.eti.utils.NewickSplitter;
-import pl.edu.pg.eti.utils.NewickUtils;
-import pl.edu.pg.eti.utils.NewickValidator;
-
 @Controller
 @Scope("session")
 @EnableAutoConfiguration
-public class NewickController {
+public class NewickController  {
+
 
 	private static String METRICS = "-d";
 	private static String NORMALIZED_DISTANCES = "-N";
@@ -49,8 +39,11 @@ public class NewickController {
 	private static String INPUT_FILE = "-i";
 	private static String OUTPUT_FILE = "-o";
 
-	@Autowired
-	ServletContext servletContext;
+    @LocalServerPort
+    int localServerPort;
+	
+	@Value("${pl.pg.edu.eti.mode:servlet-container}")
+    private String mode;
 
 	private List<String> arguments = new ArrayList<String>();
 	private static ConfigParser confParser = new ConfigParser();
@@ -66,8 +59,9 @@ public class NewickController {
 
 	public static void main(String[] args) throws Exception {
 		CopyDataAndConfigFilesToTemporary();
-		SpringApplication.run(NewickController.class, args);
-		ShowMessageAboutSuccessfulStartup();
+		new SpringApplicationBuilder(NewickController.class).properties(
+                "pl.pg.edu.eti.mode:standalone").run(args);
+        //ShowMessageAboutSuccessfulStartup();
 	}
 
 	private static void CopyDataAndConfigFilesToTemporary() {
@@ -126,8 +120,7 @@ public class NewickController {
 		}
 	}
 
-	private static void ShowMessageAboutSuccessfulStartup() {
-		//String port = environment.getProperty("local.server.port");
+/*	private static void ShowMessageAboutSuccessfulStartup() {
 		System.out.println();
 		System.out.println("********************************");
 		System.out.println("Application started successfully");
@@ -135,7 +128,18 @@ public class NewickController {
 		System.out.println();
 		System.out.println("Description:");
 		System.out.format("The application GUI is available at: http://localhost:%s/TreeCmp/WEB", "<port_number>");
-	}
+	}*/
+
+    @PostConstruct
+    public void ShowMessageAboutSuccessfulStartup() throws Exception {
+        System.out.println();
+        System.out.println("********************************");
+        System.out.println("Application started successfully");
+        System.out.println("********************************");
+        System.out.println();
+        System.out.println("Description:");
+        System.out.format("The application GUI is available at: http://localhost:%d/TreeCmp/WEB", localServerPort);
+    }
 
 	@RequestMapping(value = "/WEB", method = RequestMethod.GET)
 	public ModelAndView getNewick(Model model) {
@@ -205,6 +209,10 @@ public class NewickController {
 		NewickValidator newickVal = new NewickValidator(newick);
 
 		newickVal.validate(inputFile, refTreeFile);
+
+		if(!mode.equals("standalone")) {
+		    // todo: check newick leves cardinality
+        }
 
 		if (!newickVal.getErrors().isEmpty()) {
 			for (ObjectError objErr : newickVal.getErrors()) {
@@ -338,4 +346,5 @@ public class NewickController {
 
 		arguments.add(sb.toString());
 	}
+
 }

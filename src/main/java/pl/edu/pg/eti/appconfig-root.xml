@@ -12,5 +12,4 @@
     <context:component-scan base-package="pl.edu.pg.eti.*"/>
 
     <context:property-placeholder location="classpath:application.properties"/>
-
 </beans>
