@@ -739,6 +739,7 @@ var TreeCompare = function(){
                 fullTree.total = newicks.length;
             } else {
                 fullTree.total = 1;
+                fullTree.myName = myName;
             }
             fullTree.data.autoCollapseDepth = getRecommendedAutoCollapse(tree);
 
@@ -2254,6 +2255,17 @@ var TreeCompare = function(){
         });
     }
 
+    function createTreeIdLabel(canvasId, baseTree){
+
+        function buildTreeIdLabel(canvasId){
+
+            d3.select("#" + canvasId).append("div")
+                .attr("class", "treeLabel")
+                .text("Tree no." + baseTree.myName);
+        }
+        buildTreeIdLabel(canvasId);
+    }
+
     function createToolbar(canvasId, baseTree, compareMode){
 
         function buildToolbar(canvasId) {
@@ -3309,6 +3321,7 @@ var TreeCompare = function(){
         $("#"+canvasId+" .rescaleButtons").remove();
         $("#"+canvasId+" .zoomSlider").remove();
 
+        createTreeIdLabel(canvasId, baseTree);
         createLeafSearch(canvasId, name);
         createToolbar(canvasId, baseTree, compareMode);
         createShareButton(canvasId);

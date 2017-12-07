@@ -626,6 +626,12 @@ treeToolsMenuContent {
 
 /*Styles for leaf searching*/
 
+.treeLabel {
+    padding: 5px;
+    top: 5px;
+    position: absolute;
+}
+
 .searchBox {
     padding: 5px;
     right: 83px;

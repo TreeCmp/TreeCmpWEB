@@ -437,7 +437,7 @@ function getTrees(firstTreeId, secondTreeId) {
 		dataType: 'json',
 		data: "{\"firstTreeId\" : \""+ firstTreeId +"\", \"secondTreeId\" : \""+ secondTreeId +"\"}",
 		success: function(data) {
-			drawTrees(data.firstTreeNewick, data.secondTreeNewick);
+			drawTrees(data.firstTreeNewick, data.secondTreeNewick, firstTreeId, secondTreeId);
 		},
 		error: function() {
 			alert("something went wrong :(");
