@@ -14,8 +14,10 @@ import org.forester.phylogeny.Phylogeny;
 
 public class NewickValidator {
 
-	public Integer MIN_WINDOW_VAL = 2;
-	public Integer MAX_WINDOW_VAL = 99;
+	private Integer MIN_WINDOW_VAL = 2;
+	private Integer MAX_WINDOW_VAL = 1000;
+	private Integer MAX_TREES_TRESHOLD = 100;
+	private Integer MAX_LEAVES_TRESHOLD = 1000;
 
 	private String comparisionFileLoc;
 	private String refTreeFileLoc;
@@ -31,7 +33,7 @@ public class NewickValidator {
 		return newickErrors;
 	}
 	
-	public void validate(File comparisionFile, File refTreeFile) {
+	public void validate(File comparisionFile, File refTreeFile, boolean limitedTreesSize) {
 		if (comparisionFile != null) {
 			this.comparisionFileLoc = comparisionFile.getAbsolutePath();
 		}
@@ -41,7 +43,7 @@ public class NewickValidator {
 		validateMetrics();
 		validateSelectedMode();
 		validateWindowWidthInput();
-		validateInput();
+		validateInput(limitedTreesSize);
 	}
 	
 	private void validateMetrics() {
@@ -51,12 +53,12 @@ public class NewickValidator {
 		}
 	}
 	
-	private void validateInput() {
+	private void validateInput(boolean limitedTreesSize) {
 		if (newick.getInputType() != null && newick.getInputType().equals(NewickUtils.STRING_INPUT)) {
-			validateInputString(newick.getNewickStringFirst(), "newickStringFirst", comparisionFileLoc);
+			validateInputString(newick.getNewickStringFirst(), "newickStringFirst", comparisionFileLoc, limitedTreesSize);
 			
 			if (newick.getComparisionMode().equals(NewickUtils.REF_TO_ALL_COMPARISION_MODE)) {
-				validateInputString(newick.getNewickStringSecond(), "newickStringSecond", refTreeFileLoc);
+				validateInputString(newick.getNewickStringSecond(), "newickStringSecond", refTreeFileLoc, limitedTreesSize);
 			}
 		} else if (newick.getInputType() != null && newick.getInputType().equals(NewickUtils.FILE_INPUT)) {
 		}
@@ -83,7 +85,7 @@ public class NewickValidator {
 		return true;
 	}
 
-	private void validateInputString(String inputString, String fieldName, String fileLoc) {
+	private void validateInputString(String inputString, String fieldName, String fileLoc, boolean limitedTreesSize) {
 		ObjectError objError = null;
 		if (inputString.isEmpty()) {
 			objError = new FieldError("newick", fieldName, "Field cannot be empty.");
@@ -98,7 +100,22 @@ public class NewickValidator {
 		
 		try {
 			Phylogeny[] trees = ParserUtils.readPhylogenies(fileLoc);
-		} catch (Exception e) {
+			if (limitedTreesSize) {
+				if (trees.length > MAX_TREES_TRESHOLD) {
+					objError = new FieldError("newick", fieldName, "More than " + MAX_TREES_TRESHOLD + " trees are forbidden");
+                    newickErrors.add(objError);
+				}
+				else {
+                    for (Phylogeny tree : trees) {
+                        if (tree.getNodeCount() > MAX_LEAVES_TRESHOLD) {
+                            objError = new FieldError("newick", fieldName, "Trees with more than " + MAX_LEAVES_TRESHOLD + " leaves are forbidden");
+                            newickErrors.add(objError);
+                            break;
+                        }
+                    }
+                }
+			}
+        } catch (Exception e) {
 			objError = new FieldError("newick", fieldName, "Input format is not correct.");
 			newickErrors.add(objError);
 		}

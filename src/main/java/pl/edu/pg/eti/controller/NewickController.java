@@ -1,9 +1,9 @@
 package pl.edu.pg.eti.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
@@ -14,12 +14,13 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.util.DateUtils;
+import pl.edu.pg.eti.model.ComparisonMode;
 import pl.edu.pg.eti.model.JsonTrees;
-import pl.edu.pg.eti.model.Mode;
 import pl.edu.pg.eti.model.Newick;
+import pl.edu.pg.eti.model.WorkMode;
 import pl.edu.pg.eti.utils.*;
 
-import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
 import javax.validation.Valid;
 import java.io.*;
 import java.nio.file.Files;
@@ -31,7 +32,6 @@ import java.util.*;
 @EnableAutoConfiguration
 public class NewickController  {
 
-
 	private static String METRICS = "-d";
 	private static String NORMALIZED_DISTANCES = "-N";
 	private static String PRUNE_COMPARED = "-P";
@@ -39,11 +39,11 @@ public class NewickController  {
 	private static String INPUT_FILE = "-i";
 	private static String OUTPUT_FILE = "-o";
 
-    @LocalServerPort
-    int localServerPort;
+	@Autowired
+	ServletContext servletContext;
 	
-	@Value("${pl.pg.edu.eti.mode:servlet-container}")
-    private String mode;
+	@Value("${pl.pg.edu.eti.mode:SERVLET_CONTAINER}")
+    private WorkMode workMode;
 
 	private List<String> arguments = new ArrayList<String>();
 	private static ConfigParser confParser = new ConfigParser();
@@ -52,7 +52,7 @@ public class NewickController  {
 	private NewickSplitter splitter;
 	private NewickSplitter referencedTreesSplitter;
     private static String rawReport;
-	private Mode comparisionMode;
+	private ComparisonMode comparisionMode;
 
 	private static String configFile = "";
 	private static String dataDir = "";
@@ -60,7 +60,7 @@ public class NewickController  {
 	public static void main(String[] args) throws Exception {
 		CopyDataAndConfigFilesToTemporary();
 		new SpringApplicationBuilder(NewickController.class).properties(
-                "pl.pg.edu.eti.mode:standalone").run(args);
+                "pl.pg.edu.eti.mode:STANDALONE").run(args);
         //ShowMessageAboutSuccessfulStartup();
 	}
 
@@ -120,7 +120,7 @@ public class NewickController  {
 		}
 	}
 
-/*	private static void ShowMessageAboutSuccessfulStartup() {
+	private static void ShowMessageAboutSuccessfulStartup() {
 		System.out.println();
 		System.out.println("********************************");
 		System.out.println("Application started successfully");
@@ -128,18 +128,7 @@ public class NewickController  {
 		System.out.println();
 		System.out.println("Description:");
 		System.out.format("The application GUI is available at: http://localhost:%s/TreeCmp/WEB", "<port_number>");
-	}*/
-
-    @PostConstruct
-    public void ShowMessageAboutSuccessfulStartup() throws Exception {
-        System.out.println();
-        System.out.println("********************************");
-        System.out.println("Application started successfully");
-        System.out.println("********************************");
-        System.out.println();
-        System.out.println("Description:");
-        System.out.format("The application GUI is available at: http://localhost:%d/TreeCmp/WEB", localServerPort);
-    }
+	}
 
 	@RequestMapping(value = "/WEB", method = RequestMethod.GET)
 	public ModelAndView getNewick(Model model) {
@@ -176,26 +165,26 @@ public class NewickController  {
 
 		if (newick.getComparisionMode().equals(NewickUtils.WINDOW_COMPARISION_MODE)) {
 			arguments.add(NewickUtils.WINDOW_COMPARISION_MODE);
-			comparisionMode = Mode.WINDOW;
+			comparisionMode = ComparisonMode.WINDOW;
 			arguments.add(String.format("%s", newick.getWindowWidth()));
 			String normalizedFirstNewick = NewickUtils.GetNormalizedNewickString(newick.getNewickStringFirst());
 			splitter = new NewickSplitter(normalizedFirstNewick);
 		}
 		else if (newick.getComparisionMode().equals(NewickUtils.MATRIX_COMPARISION_MODE)) {
 			arguments.add(NewickUtils.MATRIX_COMPARISION_MODE);
-			comparisionMode = Mode.MATRIX;
+			comparisionMode = ComparisonMode.MATRIX;
 			String normalizedFirstNewick = NewickUtils.GetNormalizedNewickString(newick.getNewickStringFirst());
 			splitter = new NewickSplitter(normalizedFirstNewick);
 		}
 		else if (newick.getComparisionMode().equals(NewickUtils.OVERLAPPING_PAIR_COMPARISION_MODE)) {
 			arguments.add(NewickUtils.OVERLAPPING_PAIR_COMPARISION_MODE);
-			comparisionMode = Mode.OVERLAPPING_PAIR;
+			comparisionMode = ComparisonMode.OVERLAPPING_PAIR;
 			String normalizedFirstNewick = NewickUtils.GetNormalizedNewickString(newick.getNewickStringFirst());
 			splitter = new NewickSplitter(normalizedFirstNewick);
 		}
 		else if (newick.getComparisionMode().equals(NewickUtils.REF_TO_ALL_COMPARISION_MODE)) {
 			arguments.add(NewickUtils.REF_TO_ALL_COMPARISION_MODE);
-			comparisionMode = Mode.REF_TO_ALL;
+			comparisionMode = ComparisonMode.REF_TO_ALL;
 			refTreeFile = nu.createTempFileWithGivenContent(newick.getNewickStringSecond());
 
 			String normalizedFirstNewick = NewickUtils.GetNormalizedNewickString(newick.getNewickStringFirst());
@@ -208,11 +197,7 @@ public class NewickController  {
 
 		NewickValidator newickVal = new NewickValidator(newick);
 
-		newickVal.validate(inputFile, refTreeFile);
-
-		if(!mode.equals("standalone")) {
-		    // todo: check newick leves cardinality
-        }
+		newickVal.validate(inputFile, refTreeFile, workMode != WorkMode.STANDALONE);
 
 		if (!newickVal.getErrors().isEmpty()) {
 			for (ObjectError objErr : newickVal.getErrors()) {
@@ -317,7 +302,7 @@ public class NewickController  {
 
 	@RequestMapping(value="/trees", method=RequestMethod.POST)
 	public @ResponseBody JsonTrees provideTree(@RequestBody final JsonTrees tree) {
-		if(comparisionMode == Mode.REF_TO_ALL) {
+		if(comparisionMode == ComparisonMode.REF_TO_ALL) {
 			tree.firstTreeNewick = splitter.GetTree(tree.secondTreeId-1);
 			tree.secondTreeNewick = referencedTreesSplitter.GetTree(tree.firstTreeId-1);
 		}
