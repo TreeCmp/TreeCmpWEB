@@ -114,6 +114,9 @@
 								<div>
 									<errors th:errors="*{newickStringFirst}" class="error" />
 								</div>
+								<div>
+									<errors class="error" id="renderErrorMessage1"/>
+								</div>
 								<div class="exmpBtn smallMargin" id="addExmpTreeToFirstWindow"><a href="#">Example Trees</a></div>
 
 							</div>
@@ -140,6 +143,9 @@
 								<div>
 									<errors th:errors="*{newickStringSecond}" class="error" />
 								</div>
+                                <div>
+                                    <errors class="error" id="renderErrorMessage2"/>
+                                </div>
 								<div class="exmpBtn smallMargin" id="addExmpTreeToSecondWindow"><a href="#">Example Trees</a></div>
 							</div>
 
@@ -377,7 +383,10 @@
         function drop(event) {
             event.stopPropagation();
             event.preventDefault();
-            $("#renderErrorMessage").empty();
+
+            newickInputNumber = event.currentTarget.id == "newickInputFirst" ? 1 : 2;
+
+            $("#renderErrorMessage" + newickInputNumber).empty();
 
             var data = event.dataTransfer;
             var file = data.files;
@@ -395,11 +404,11 @@
                 reader.onload = function(event) {
                     if(!(checkTreeInput(event.target.result)=="NotNwk")){
                         $("#" + newickIn).val(event.target.result);
-                        $("#renderErrorMessage").empty();
+                        $("#renderErrorMessage" + newickInputNumber).empty();
                     } else {
-                        $("#renderErrorMessage").empty();
-                        $("#renderErrorMessage").append($('<div class="alert alert-danger" role="alert">This is not a tree file!</div>')).hide().slideDown(300);
-                        $("#" + newickIn).attr("placeholder","Paste your tree or drag and drop your tree file here").val("");
+                        $("#renderErrorMessage" + newickInputNumber).empty();
+                        $("#renderErrorMessage" + newickInputNumber).append($('<div>This is not a tree file!</div>')).hide().slideDown(300);
+                        $("#" + newickIn).attr("placeholder","Paste or drag and drop your trees in newick format separated by ;").val("");
                     }
 
                 };
@@ -414,12 +423,12 @@
                     $("#" + newickIn + "Label").val(file[0].name);
                 }
             } else {
-                $("#renderErrorMessage").empty();
+                $("#renderErrorMessage" + newickInputNumber).empty();
                 $("#" + newickIn + "Label").text("No file");
-                $("#renderErrorMessage").append($('<div class="alert alert-danger" role="alert">Only the following file endings are accepted: txt, nh, nhx, nwk, tre, tree</div>')).hide().slideDown(300);
+                $("#renderErrorMessage" + newickInputNumber).append($('<div>Only the following file endings are accepted: txt, nh, nhx, nwk, tre, tree</div>')).hide().slideDown(300);
                 //$("#" + newickIn).val("");
                 $("#" + newickIn+ "Label").attr("placeholder","Untitled").val("");
-                $("#" + newickIn).attr("placeholder","Paste your tree or drag and drop your tree file here").val("");
+                $("#" + newickIn).attr("placeholder","Paste or drag and drop your trees in newick format separated by ;").val("");
             }
 
             // object for allowed media types
@@ -470,12 +479,12 @@
                 reader.onload = function(event) {
                     if(!(checkTreeInput(event.target.result)=="NotNwk")){
                         $("#" + newickIn).val(event.target.result);
-                        $("#renderErrorMessage").empty();
+                        $("#renderErrorMessage" + newickInputNumber).empty();
                     } else {
-                        $("#renderErrorMessage").empty();
-                        $("#renderErrorMessage").append($('<div class="alert alert-danger" role="alert">This is not a tree file!</div>')).hide().slideDown(300);
+                        $("#renderErrorMessage" + newickInputNumber).empty();
+                        $("#renderErrorMessage" + newickInputNumber).append($('<div>This is not a tree file!</div>')).hide().slideDown(300);
                         $("#" + newickIn+ "Label").attr("placeholder","Untitled").val("");
-                        $("#" + newickIn).attr("placeholder","Paste your tree or drag and drop your tree file here").val("");
+                        $("#" + newickIn).attr("placeholder","Paste or drag and drop your trees in newick format separated by ;").val("");
                     }
 
                 };
@@ -491,11 +500,11 @@
                 }
 
             } else {
-                $("#renderErrorMessage").empty();
-                $("#renderErrorMessage").append($('<div class="alert alert-danger" role="alert">Only the following file endings are accepted: txt, nh, nhx, nwk, tre, tree</div>')).hide().slideDown(300);
+                $("#renderErrorMessage" + newickInputNumber).empty();
+                $("#renderErrorMessage" + newickInputNumber).append($('<div>Only the following file endings are accepted: txt, nh, nhx, nwk, tre, tree</div>')).hide().slideDown(300);
                 //$("#" + newickIn).val("");
                 $("#" + newickIn+ "Label").attr("placeholder","Untitled").val("");
-                $("#" + newickIn).attr("placeholder","Paste your tree or drag and drop your tree file here").val("");
+                $("#" + newickIn).attr("placeholder","Paste or drag and drop your trees in newick format separated by ;").val("");
             }
 
 
@@ -699,11 +708,11 @@
             outError = "TooLittle)";
         } else if (returnNumElementInArray(tokens,"(") < returnNumElementInArray(tokens,")")){
             outError = "TooLittle(";
-        } else if (tokens.indexOf(":") == -1 || tokens.indexOf("(") == -1 || tokens.indexOf(")") == -1){
+        } /*else if (tokens.indexOf(":") == -1 || tokens.indexOf("(") == -1 || tokens.indexOf(")") == -1){
             outError = "NotNwk"
         } else if (isNaN(tokens[tokens.indexOf(":")+1])){
             outError = "NotNwk"
-        }
+        }*/
 
         return outError;
     }

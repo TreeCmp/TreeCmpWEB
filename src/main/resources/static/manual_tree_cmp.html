@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>About page</title>
+    <title>TreeCmp Manual</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
@@ -51,8 +51,142 @@
 
     <br/>
     <br/>
-    <div class="col-xs-12 text-center">
-        <h1>TreeCmp Manual</h1>
+
+    <div class="container">
+        <div class="row">
+            <h2>Introduction</h2>
+            <p>
+                <a href="http://phylo.io" target="_blank">Original Phylo.io</a> is a state of the art tool for visualising and comparing phylogenetic trees on the web.
+                Phylo.io includes a number of useful features to make the viewing and comparing of even very large trees extremely easy.
+                In our case, only the visualise-related functionality is used.</p>
+        </div>
+        <div class="row">
+            <h2>Using the visualisation</h2>
+            <p>
+                After selecting the button "draw trees with Phylo.io", two chosen trees will be appear in the viewing area as shown in Fig 1.
+            </p>
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 imageContainer">
+                    <img class="img-responsive" height="400px" src="img/fig1.png">
+                    <p>Fig. 1</p>
+                </div>
+            </div>
+            <p>
+                If the tree is too large, by default is collapsed to a certain depth.
+                A collapsed node is denoted by a triangle as seen in Fig. 2.
+                The collapse depth can be changed using the option in the settings panel as shown in Fig. 3.
+                Also, clicking a node gives an array of options as seen in Fig. 4.
+                'expand' uncollapses the single node, 'expand all' uncollapses all nodes in that node's subtree and 'higlight' highlights the selected node in the neighboring tree.
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-5 col-lg-5 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig2.png">
+                <p>Fig. 2</p>
+            </div>
+            <div class="col-sm-12 col-md-7 col-lg-7 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig3.png">
+                <p>Fig. 3</p>
+            </div>
+        </div>
+        <div class="row">
+            <p>
+                There are a four controls overlayed on the visualisation that allow:
+            <ul>
+                <li>
+                    'search by leaf name' - is the search box which is discussed in the next section.
+                </li>
+                <li>
+                    'tools for tree manipulation' (highlighted, currently selected) - Fig. 4A shows the tree size controls.
+                    These can be used to manipulate the vertical and horizontal spacing of the tree to improve legibility of nodes if they are bunched together in very large trees.
+                    Fig. 4B is the zoom control.
+                    Zooming of the tree can either be done using this slider or using the scroll wheel on your mouse.
+                    Clicking the 'Export tree as ...' button shown in Fig. 4C allows you to export the parts of the tree currently visible in the visualisation container to NWK string or SVG/PNG format.
+                    In order to quickly find the best corresponding visualisation of two trees, the functions reroot and reorder Fig. 4D can be employed.
+                    Both ensure that the same rooting and same leaf order is found based on a fixed tree, as shown in Fig. 5 - Fig. 8.
+                    There a highlighted node is first used as root point and then the opposite tree is rerooted automatically with the same root and the leaf order is adjusted.
+                    Using finally the collapse functionality makes it possible to quickly find a representation that is very similar.
+                </li>
+                <li>
+                    share tree as gist in the cloud
+                </li>
+                <li>
+                    undo last tree manipulation
+                </li>
+            </ul>
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-8 col-lg-8 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig4.png">
+                <p>Fig. 4</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-6 imageContainer">
+                <img class="img-responsive" height="200px" src="img/fig5.png">
+                <p>Fig. 5</p>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6 imageContainer">
+                <img class="img-responsive" height="200px" src="img/fig6.png">
+                <p>Fig. 6</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-6 imageContainer">
+                <img class="img-responsive" height="200px" src="img/fig7.png">
+                <p>Fig. 7</p>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6 imageContainer">
+                <img class="img-responsive" height="200px" src="img/fig8.png">
+                <p>Fig. 8</p>
+            </div>
+        </div>
+        <div class="row">
+            <h2>Search</h2>
+            <p>Clicking the first menu button in Fig. 9 brings up the search box.
+                If you start typing in here, suggested results will appear instantly.
+                Click on the taxon you are looking for and its position in the tree will be highlighted in red along with the path to that leaf from the root of the tree.
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig9.png">
+                <p>Fig. 9</p>
+            </div>
+        </div>
+        <div class="row">
+            <h2>Scale</h2>
+            <p>Underneath each tree visualised, a dyanmic scale is drawn showing the length metric for that tree Fig. 10.
+                This updates in real time as you zoom in and explore the tree.
+                Alternatively, if you want to view the tree without the branch lengths taken into account, you can turn this off in settings Fig. 11.
+                If lengths are turned off, the visualisation will update in real time to reflect this.</p>
+            <div class="row">
+                <div class="col-sm-12 col-md-7 col-lg-5 imageContainer">
+                    <img class="img-responsive" height="400px" src="img/fig10.png">
+                    <p>Fig. 10</p>
+                </div>
+                <div class="col-sm-12 col-md-7 col-lg-5 imageContainer">
+                    <img class="img-responsive" height="400px" src="img/fig11.png">
+                    <p>Fig. 11</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <h2>Settings</h2>
+            <p>There are a number of options available to change the styling of the visualisation Fig. 12 as well as the text displayed on internal nodes Fig.13.
+                Changing these settings will cause the visualisation to update in real time.</p>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-6 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig12.png">
+                <p>Fig. 12</p>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig13.png">
+                <p>Fig. 13</p>
+            </div>
+        </div>
     </div>
     <!-- FOOTER -->
     <div class="row footer">
