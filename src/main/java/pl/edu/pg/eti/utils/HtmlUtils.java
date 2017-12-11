@@ -135,7 +135,7 @@ public class HtmlUtils {
 
 	private String addButtons(Boolean header, String firstId, String secondId) {
 		if(header == true) {
-			return boldedCell("Draw trees in");
+			return boldedCell("Draw trees with");
 		}
 		else {
 			String trees = firstId + "," + secondId;
@@ -145,7 +145,7 @@ public class HtmlUtils {
 
 	private String addRadioButtons(Boolean header, String firstId, String secondId) {
 		if(header == true) {
-			return boldedCell("Draw trees in");
+			return boldedCell("Draw trees with");
 		}
 		else {
 			String trees = firstId + "," + secondId;
