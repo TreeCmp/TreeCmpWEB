@@ -402,12 +402,13 @@
                 var reader;
                 reader = new FileReader();
                 reader.onload = function(event) {
-                    if(!(checkTreeInput(event.target.result)=="NotNwk")){
+                    var error = checkTreeInput(event.target.result);
+                    if(checkTreeInput(event.target.result)==""){
                         $("#" + newickIn).val(event.target.result);
                         $("#renderErrorMessage" + newickInputNumber).empty();
                     } else {
                         $("#renderErrorMessage" + newickInputNumber).empty();
-                        $("#renderErrorMessage" + newickInputNumber).append($('<div>This is not a tree file!</div>')).hide().slideDown(300);
+                        $("#renderErrorMessage" + newickInputNumber).append($('<div> ' + error + ' </div>')).hide().slideDown(300);
                         $("#" + newickIn).attr("placeholder","Paste or drag and drop your trees in newick format separated by ;").val("");
                     }
 
@@ -477,13 +478,13 @@
             if (accept.text.indexOf(file_name_ending) > -1){
                 var reader = new FileReader();
                 reader.onload = function(event) {
-                    if(!(checkTreeInput(event.target.result)=="NotNwk")){
+                    var error = checkTreeInput(event.target.result);
+                    if(checkTreeInput(event.target.result)==""){
                         $("#" + newickIn).val(event.target.result);
                         $("#renderErrorMessage" + newickInputNumber).empty();
                     } else {
                         $("#renderErrorMessage" + newickInputNumber).empty();
-                        $("#renderErrorMessage" + newickInputNumber).append($('<div>This is not a tree file!</div>')).hide().slideDown(300);
-                        $("#" + newickIn+ "Label").attr("placeholder","Untitled").val("");
+                        $("#renderErrorMessage" + newickInputNumber).append($('<div> ' + error + ' </div>')).hide().slideDown(300);
                         $("#" + newickIn).attr("placeholder","Paste or drag and drop your trees in newick format separated by ;").val("");
                     }
 
@@ -546,156 +547,28 @@
     }
 
 	/*
-	 Newick to JSON converter, just copied code from newick.js
-	 */
-    function convertTree(s) { //s is newick file format
-        var ancestors = [];
-        var tree = {};
-
-        s = s.replace(/(\r\n|\n|\r)/gm,""); // remove all new line characters
-
-        var tokens = s.split(/\s*(;|\(|\[|\]|\)|,|:)\s*/); //already splits the NHX format as well
-
-        function getIdxToken(tokenArray, queryToken){
-            var posTokens = [];
-            for (var i = 0; i < tokenArray.length; i++){
-                if (tokenArray[i] == queryToken){
-                    posTokens.push(i)
-                }
-
-            }
-            return posTokens;
-        }
-
-        // the following part keeps the NHX datastructure
-        var square_bracket_start = getIdxToken(tokens,"[");
-        var square_bracket_end = getIdxToken(tokens,"]");
-        var new_tokens = [];
-        var j = 0;
-        for (var i = 0; i < tokens.length; i++){
-            if (tokens[i] == "["){
-                var dist_square_bracket = square_bracket_end[j] - square_bracket_start[j];
-                new_tokens.push(tokens[i]);
-                new_tokens.push(tokens.slice(i+1,i+dist_square_bracket).join(""));
-                new_tokens.push(tokens[i+dist_square_bracket]);
-                i = i + dist_square_bracket;
-                j = j + 1;
-            }else{
-                new_tokens.push(tokens[i]);
-            }
-        }
-
-        try { //catch error when newick is not in place
-            if (tokens=="") throw "empty";// calls convert function from above
-        } catch (err) {
-            throw "NoTree";
-        }
-
-        try {
-            if (checkTreeInput(s)=="TooLittle)") throw "empty"; // TODO:change this to &&NHX and not []
-        } catch (err) {
-            throw "TooLittle)"
-        }
-
-        try {
-            if (checkTreeInput(s)=="TooLittle(") throw "empty"; // TODO:change this to &&NHX and not []
-        } catch (err) {
-            throw "TooLittle("
-        }
-
-
-        function check_nhx_variable(nhx_array, string_to_check){
-            var found_pos = -1;
-            for (var i = 0; i < nhx_array.length; i++){
-                if (nhx_array[i].indexOf(string_to_check)!=-1){
-                    found_pos = i;
-                }
-            }
-
-            return found_pos;
-        }
-
-        for (var i = 0; i < new_tokens.length; i++) {
-            var token = new_tokens[i];
-            switch (token) {
-                case '(': // new children
-                    var subtree = {};
-                    tree.children = [subtree];
-                    ancestors.push(tree);
-                    tree = subtree;
-                    break;
-                case ',': // another branch
-                    var subtree = {};
-                    ancestors[ancestors.length - 1].children.push(subtree);
-                    tree = subtree;
-                    break;
-                case '['://TODO: input NHX format
-                    var x = new_tokens[i + 1];
-                    if (x.indexOf("&&NHX")!=-1){ //if NHX format
-                        var nhx_tokens = x.split(/:/);
-                        var tmp_idx = check_nhx_variable(nhx_tokens, "B=");
-                        if (tmp_idx!=-1){
-                            var branchSupport = nhx_tokens[tmp_idx].split("=");
-                            tree.branchSupport = branchSupport[1];
-                        }
-
-                    }else{
-                        if (!(x===";" || x==="")){
-                            tree.branchSupport = x;
-                        }
-                    }
-                    break;
-                case ']':
-                    //var x = new_tokens[i - 1];
-                    //tree.branchSupport = x;
-                    break;
-                case ')': // optional
-                    tree = ancestors.pop();
-                    var x = new_tokens[i + 1];
-                    if (!(x===";" || x==="")){
-                        tree.branchSupport = x;
-                    }
-                    break;
-                case ':': // optional length next
-                    break;
-                default:
-                    var x = new_tokens[i - 1];
-                    if (x == ')' || x == '(' || x == ',') {
-                        var tree_meta = token.split("@@"); // separation of metadata for export
-                        tree.name = tree_meta[0];
-                        tree.length = 0.1; // this is used in the case the tree does not have any branch values
-                        if(tree_meta.indexOf("collapsed")!==-1){
-                            tree.collapsed = true;
-                        }else{
-                            tree.collapsed = false;
-                        }
-                        if(tree_meta.indexOf("clickedParentHighlight")!==-1){
-                            tree.clickedParentHighlight = true;
-                        }
-                        if(tree_meta.indexOf("correspondingHighlight")!==-1) {
-                            tree.correspondingHighlight = true;
-                        }
-                        if(tree_meta.indexOf("bcnhighlight")!==-1) {
-                            tree.bcnhighlight = true;
-                        }
-                        if(tree_meta.indexOf("clickedHighlight")!==-1){
-                            tree.clickedHighlight = true;
-                        }
-                    } else if (x == ':') {
-                        tree.length = parseFloat(token);
-                    }
-            }
-        }
-        return tree;
-    }
-
-	/*
 	 This function checks the consistency of the input string for the tree
 	 */
     function checkTreeInput(s){
         var tokens = s.split(/\s*(;|\(|\[|\]|\)|,|:)\s*/);
         var outError = "";
 
+        function isBracketsOrderCorrect(inArray){
+            var nestingDepth = 0;
+            var result = true;
+            for(var i=0;i<inArray.length;i++) {
+                if (inArray[i] === '(')
+                    nestingDepth++;
+                else if (inArray[i] === ')') {
+                    nestingDepth--;
+                    if (nestingDepth <= 0)
+                        if (!(inArray[i+1] === ';' || inArray[i+2] === ';')) {
+                            result = false;
+                        }
+                }
+            }
+            return result;
+        }
         function returnNumElementInArray(inArray,element){
             var numOfTrue = 0;
             for(var i=0;i<inArray.length;i++){
@@ -705,14 +578,14 @@
             return numOfTrue;
         }
         if (returnNumElementInArray(tokens,"(") > returnNumElementInArray(tokens,")")){
-            outError = "TooLittle)";
+            outError = "Too little \")\" brackets";
         } else if (returnNumElementInArray(tokens,"(") < returnNumElementInArray(tokens,")")){
-            outError = "TooLittle(";
-        } /*else if (tokens.indexOf(":") == -1 || tokens.indexOf("(") == -1 || tokens.indexOf(")") == -1){
-            outError = "NotNwk"
-        } else if (isNaN(tokens[tokens.indexOf(":")+1])){
-            outError = "NotNwk"
-        }*/
+            outError = "Too little \"(\" brackets";
+        } else if (!isBracketsOrderCorrect(tokens)) {
+            outError = "Wrong brackets order";
+        } else if (/*tokens.indexOf(":") === -1 ||*/ tokens.indexOf("(") === -1 || tokens.indexOf(")") === -1 || isNaN(tokens[tokens.indexOf(":")+1])){
+            outError = "Not Newick trees";
+        }
 
         return outError;
     }
