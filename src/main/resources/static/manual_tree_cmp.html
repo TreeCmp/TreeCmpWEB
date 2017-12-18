@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
     <link rel="stylesheet" href="css/treecmp.css" type="text/css" />
 
+
     <style>
         .form-group .item{white-space: nowrap; display:inline}
     </style>
@@ -56,137 +57,425 @@
         <div class="row">
             <h2>Introduction</h2>
             <p>
-                <a href="http://phylo.io" target="_blank">Original Phylo.io</a> is a state of the art tool for visualising and comparing phylogenetic trees on the web.
-                Phylo.io includes a number of useful features to make the viewing and comparing of even very large trees extremely easy.
-                In our case, only the visualise-related functionality is used.</p>
+                The TreeCmp application was designed to compute distances between arbitrary (not necessary binary) phylogenetic trees.
+                Offers an implementation of metrics allowing to compare trees with a large number of leaves.
+            </p>
         </div>
         <div class="row">
-            <h2>Using the visualisation</h2>
+            <h2>Comparison modes</h2>
             <p>
-                After selecting the button "draw trees with Phylo.io", two chosen trees will be appear in the viewing area as shown in Fig 1.
+                In the first step, select one of the four available comparison modes (Overlaping Pair, Window, Matrix - default, Single (reference) tree to all trees) as shown in Fig 1.
+                In the case of Window mode you have to enter it's width in the additional field as shown in Fig 2.
             </p>
             <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12 imageContainer">
-                    <img class="img-responsive" height="400px" src="img/fig1.png">
+                <div class="col-sm-6 col-md-4 col-lg-3 imageContainer">
+                    <img class="img-responsive" height="400px" style="border: 1px solid" src="img/fig1.png">
                     <p>Fig. 1</p>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3 imageContainer">
+                    <img class="img-responsive" height="400px" style="border: 1px solid" src="img/fig2.png">
+                    <p>Fig. 2</p>
                 </div>
             </div>
             <p>
-                If the tree is too large, by default is collapsed to a certain depth.
-                A collapsed node is denoted by a triangle as seen in Fig. 2.
-                The collapse depth can be changed using the option in the settings panel as shown in Fig. 3.
-                Also, clicking a node gives an array of options as seen in Fig. 4.
-                'expand' uncollapses the single node, 'expand all' uncollapses all nodes in that node's subtree and 'higlight' highlights the selected node in the neighboring tree.
+                In each of those available modes, different trees are compared:
+                <ul>
+                    <li>
+                        <span style="color: blue"> overlapping pair </span> comparison mode; every two neighboring trees from the input are compared.
+                    </li>
+                    <li>
+                        <span style="color: red"> window </span> comparison mode; every two trees within a window with a specified size are compared – the average distance and the standard deviation can be computed if Include summary options is checked,
+                    </li>
+                    <li>
+                        <span style="color: mediumvioletred"> matrix </span> comparison mode; every two trees from the input are compared.
+                    </li>
+                    <li>
+                        <span style="color: green"> single tree to all trees </span> mode; each tree from the input is compared to the single referenced tree (or trees).
+                    </li>
+                </ul>
+                Details of the computation flow in each of these case are explained in in Fig. 3.
             </p>
         </div>
-        <div class="row">
-            <div class="col-sm-12 col-md-5 col-lg-5 imageContainer">
-                <img class="img-responsive" height="400px" src="img/fig2.png">
-                <p>Fig. 2</p>
-            </div>
+        <div class="row" style="border: 1px solid">
             <div class="col-sm-12 col-md-7 col-lg-7 imageContainer">
-                <img class="img-responsive" height="400px" src="img/fig3.png">
-                <p>Fig. 3</p>
+                <img class="img-responsive" height="400px" src="img/fig3a.png">
+            </div>
+            <div class="col-sm-8 col-md-5 col-lg-5 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig3b.png">
             </div>
         </div>
+        <a id="compared_trees"></a>
+        <p>Fig. 3</p>
         <div class="row">
+            <h2>Compared trees</h2>
             <p>
-                There are a four controls overlayed on the visualisation that allow:
+                The TreeCmp software was designed to support <a target="_blank" href="https://en.wikipedia.org/wiki/Nexus_file">Nexus</a> tree
+                specifications date files (<a target="_blank" href="http://beast.bio.ed.ac.uk/">BEAST</a> and <a target="_blank" href="http://mrbayes.csit.fsu.edu/">MrBayes</a>), where phylogenetic trees are stored in the Newick format.
+                Note that plain text files containing only trees in this format are supported as well.
+                <br/>
+                In next step compared trees should be entered, it can be done it in few ways as shown in Fig 4, You can:
             <ul>
                 <li>
-                    'search by leaf name' - is the search box which is discussed in the next section.
+                     enter manually or paste from the clipboard one or more phylogenetic trees separated by a semicolon to the main newick trees window (Fig. 4A).
                 </li>
                 <li>
-                    'tools for tree manipulation' (highlighted, currently selected) - Fig. 4A shows the tree size controls.
-                    These can be used to manipulate the vertical and horizontal spacing of the tree to improve legibility of nodes if they are bunched together in very large trees.
-                    Fig. 4B is the zoom control.
-                    Zooming of the tree can either be done using this slider or using the scroll wheel on your mouse.
-                    Clicking the 'Export tree as ...' button shown in Fig. 4C allows you to export the parts of the tree currently visible in the visualisation container to NWK string or SVG/PNG format.
-                    In order to quickly find the best corresponding visualisation of two trees, the functions reroot and reorder Fig. 4D can be employed.
-                    Both ensure that the same rooting and same leaf order is found based on a fixed tree, as shown in Fig. 5 - Fig. 8.
-                    There a highlighted node is first used as root point and then the opposite tree is rerooted automatically with the same root and the leaf order is adjusted.
-                    Using finally the collapse functionality makes it possible to quickly find a representation that is very similar.
+                    click the button with the file icon (Fig. 4B) and then in the newly opened explorator window, select the appropriate newick file.
+                    If the file is properly loaded, its contents should be displayed in the main newick trees window and its name will be displayed in the textbox (Fig. 4C).
                 </li>
                 <li>
-                    share tree as gist in the cloud
+                    drag and drop file with trees on the main newick trees window, the result should be the same as in the previous case.
                 </li>
                 <li>
-                    undo last tree manipulation
+                    if you don't have any Nexus trees files, simply enter a example trees by clicking the Example Trees link (Fig. 4D). Loaded trees should be displayed in the main newick trees window main newick trees window.
                 </li>
             </ul>
             </p>
         </div>
         <div class="row">
             <div class="col-sm-12 col-md-8 col-lg-8 imageContainer">
-                <img class="img-responsive" height="400px" src="img/fig4.png">
+                <img class="img-responsive" height="400px" src="img/fig4.png" style="border: 1px solid">
                 <p>Fig. 4</p>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-6 imageContainer">
-                <img class="img-responsive" height="200px" src="img/fig5.png">
-                <p>Fig. 5</p>
-            </div>
-            <div class="col-sm-12 col-md-6 col-lg-6 imageContainer">
-                <img class="img-responsive" height="200px" src="img/fig6.png">
-                <p>Fig. 6</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-6 imageContainer">
-                <img class="img-responsive" height="200px" src="img/fig7.png">
-                <p>Fig. 7</p>
-            </div>
-            <div class="col-sm-12 col-md-6 col-lg-6 imageContainer">
-                <img class="img-responsive" height="200px" src="img/fig8.png">
-                <p>Fig. 8</p>
-            </div>
-        </div>
-        <div class="row">
-            <h2>Search</h2>
-            <p>Clicking the first menu button in Fig. 9 brings up the search box.
-                If you start typing in here, suggested results will appear instantly.
-                Click on the taxon you are looking for and its position in the tree will be highlighted in red along with the path to that leaf from the root of the tree.
+            <h2>Metrics</h2>
+            <p>
+                In the next step, select at least one of available phylogenetic metrics.
+                It can be for rooted or unrooted trees, and if you are interested in more than one, you can select a few metrics as shown in Fig 5.
+                In a special case, you can even select all.
             </p>
         </div>
         <div class="row">
-            <div class="col-sm-12 imageContainer">
-                <img class="img-responsive" height="400px" src="img/fig9.png">
-                <p>Fig. 9</p>
+            <div class="col-sm-12 col-md-8 col-lg-8 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig5.png" style="border: 1px solid">
+                <p>Fig. 5</p>
             </div>
         </div>
+        <h2>Other options</h2>
+        <p>
+            Additional options are available (Fig 6):
+            <ul>
+                <li>
+                    report <strong> normalized distances </strong> δm for a particular metric m (Bogdanowicz et al. 2012; based on an average value from pre-computed data).
+                    This functionality is available for trees with number of leaves between 4 and 1000.
+                    Note that normalized tree similarity for a particular metric m (NTSm) can be expressed by normalized distance as follows: NTSm. = 1 - δm (Bogdanowicz et al. 2012).
+                </li>
+                <li>
+                    <strong> prune </strong> compared <strong>trees</strong> if needed.
+                    This option is design to allow comparing trees having different (partially overlapping) sets of taxa.
+                    After using this option three additional columns appear in the output file (see section 4 for details).
+                </li>
+                <li>
+                    <strong> include summary </strong> section in the output file.
+                </li>
+            </ul>
+        <p>In the last step, click Compute button to generate report (Fig 6).</p>
+        </p>
         <div class="row">
-            <h2>Scale</h2>
-            <p>Underneath each tree visualised, a dyanmic scale is drawn showing the length metric for that tree Fig. 10.
-                This updates in real time as you zoom in and explore the tree.
-                Alternatively, if you want to view the tree without the branch lengths taken into account, you can turn this off in settings Fig. 11.
-                If lengths are turned off, the visualisation will update in real time to reflect this.</p>
-            <div class="row">
-                <div class="col-sm-12 col-md-7 col-lg-5 imageContainer">
-                    <img class="img-responsive" height="400px" src="img/fig10.png">
-                    <p>Fig. 10</p>
-                </div>
-                <div class="col-sm-12 col-md-7 col-lg-5 imageContainer">
-                    <img class="img-responsive" height="400px" src="img/fig11.png">
-                    <p>Fig. 11</p>
-                </div>
+            <div class="col-sm-12 col-md-8 col-lg-8 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig6.png" style="border: 1px solid">
+                <p>Fig. 6</p>
             </div>
         </div>
+        <h2>Report</h2>
+        <p>
+            After completing calculations, results appear in the new tab as shown in Fig. 7.
+            Each row (excluding header) contains information about calculated metrics for one pair of compared trees.
+            In subsequent columns, we can find the metrics selected in the previous step (Fig. 7A).
+        </p>
         <div class="row">
-            <h2>Settings</h2>
-            <p>There are a number of options available to change the styling of the visualisation Fig. 12 as well as the text displayed on internal nodes Fig.13.
-                Changing these settings will cause the visualisation to update in real time.</p>
+            <div class="col-sm-12 col-md-12 col-lg-12 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig7.png" style="border: 1px solid">
+                <p>Fig. 7</p>
+            </div>
         </div>
+        <p>
+            The following table contains a mapping between available metrics and column names in the Report that are related to them.
+        </p>
+        <table class="report" style="width:50%">
+            <tr>
+                <th>Metric name in the output file</th>
+                <th>Full metric name</th>
+            </tr>
+            <tr>
+                <td>MatchingSplit</td>
+                <td>the Matching Split distance</td>
+            </tr>
+            <tr>
+                <td>R-F</td>
+                <td>the Robinson-Foulds distance </td>
+            </tr>
+            <tr>
+                <td>PathDiffernce</td>
+                <td>the Path difference distance</td>
+            </tr>
+            <tr>
+                <td>Quartet</td>
+                <td>the Quartet distance</td>
+            </tr>
+            <tr>
+                <td>UMAST</td>
+                <td>the Unrooted maximum agreement subtree distance</td>
+            </tr>
+            <tr>
+                <td>MatchingCluster</td>
+                <td>the Matching Cluster metric</td>
+            </tr>
+            <tr>
+                <td>R-F_Cluster</td>
+                <td>the Robinson-Foulds metric based on clusters</td>
+            </tr>
+            <tr>
+                <td>NodalSplitted</td>
+                <td>the Nodal Splitted metric with L2 norm</td>
+            </tr>
+            <tr>
+                <td>Triples</td>
+                <td>the Triples metric</td>
+            </tr>
+
+            <tr>
+                <td>MatchingPair</td>
+                <td>the Matching Pair metric</td>
+            </tr>
+            <tr>
+                <td>MAST</td>
+                <td>the Rooted maximum agreement subtree metric</td>
+            </tr>
+            <tr>
+                <td>CopheneticL2Metric</td>
+                <td>the Cophenetic Metric with L2 norm</td>
+            </tr>
+        </table>
+        <p>
+            After using Normalized distances option the following two columns (Fig. 7B) per each chosen metric appear additionally in the output file.
+            These columns contain the value of the distance in a particular metric divided by its empirical average value.
+            If the number of common leaves in compared trees is out of supported range (which is form 4 to 1000), then “N/A” value is inserted.
+            For details regarding generating phylogenetic trees under the Yule and uniform models see (McKenzie and Steel 2000; Semple and Steel 2003).
+        </p>
+        <p>
+            Using Summary option adds an additional section to the report with the following format (Fig. 7C):
+        </p>
+        <table class="report" style="width:50%">
+            <tr>
+                <th>Name</th>
+                <th>Avg</th>
+                <th>Std</th>
+                <th>Min</th>
+                <th>Max</th>
+                <th>Count</th>
+            </tr>
+            <tr>
+                <td>Metric name 1</td>
+                <td>Average value</td>
+                <td>Standard deviation value</td>
+                <td>Minimal value</td>
+                <td>Maximal value</td>
+                <td>Number of analyzed values</td>
+            </tr>
+            <tr>
+                <td>Metric name 2</td>
+                <td>…</td>
+                <td>…</td>
+                <td>…</td>
+                <td>…</td>
+                <td>…</td>
+            </tr>
+            <tr>
+                <td>…</td>
+                <td>…</td>
+                <td>…</td>
+                <td>…</td>
+                <td>…</td>
+                <td>…</td>
+            </tr>
+            <tr>
+                <td>Metric name n</td>
+                <td>…</td>
+                <td>…</td>
+                <td>…</td>
+                <td>…</td>
+                <td>…</td>
+            </tr>
+        </table>
+        <p>
+            After using switch Prune trees option the following three columns appear additionally in report (not used in our example).
+        </p>
+        <table class="report" style="width:50%">
+            <tr>
+                <th>Tree1_taxa</th>
+                <th>Tree2_taxa (or RefTree_taxa)</th>
+                <th>Common_taxa</th>
+            </tr>
+            <tr>
+                <td>Number of taxa in the first tree</td>
+                <td>Number of taxa in the second (or reference) tree</td>
+                <td>Number of taxa in common</td>
+            </tr>
+        </table>
+        <p>
+            Each pair of compared trees can be drawn by clicking the Phylo.io button (Fig. 7D Draw trees in column).
+            The visualized trees will be displayed in a new pop-up window using the <a href="http://phylo.io/">Phylo.io</a> application.
+            Detailed information related to manipulation of displayed trees are placed in the manual available in the newly displayed window.
+        </p>
+        <h2>Report file</h2>
+        <p>
+            By clicking the Save report button, you can save the report in text format file.
+            This file is tab separated text files (TSV), which means that they can be easily read by various data analysis software (e.g. MS Excel, R, OpenOffice.org).
+            An report file consists of two sections (Fig 8).
+            The first section contains formatted in rows values of distances in selected metrics.
+            The second (optional) section contains summary data computed based on all rows that appears in the first section.
+        </p>
         <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-6 imageContainer">
-                <img class="img-responsive" height="400px" src="img/fig12.png">
-                <p>Fig. 12</p>
-            </div>
-            <div class="col-sm-12 col-md-6 col-lg-6 imageContainer">
-                <img class="img-responsive" height="400px" src="img/fig13.png">
-                <p>Fig. 13</p>
+            <div class="col-sm-12 col-md-12 col-lg-12 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig8.png" style="border: 1px solid">
+                <p>Fig. 8</p>
             </div>
         </div>
+        <h2>Examples</h2>
+        <h3>Comparing trees using Matching Split distance</h3>
+        <p>Select Window comparison and set window width to 2 as shown in Fig 9a.</p>
+        <div class="row">
+            <div class="col-sm-6 col-md-4 col-lg-3 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig9a.png" style="border: 1px solid">
+                <p>Fig. 9a</p>
+            </div>
+        </div>
+        <p>
+            Enter the following NEXUS file format content (File. 1) to the main newick trees window (Fig. 9b).
+            This is the first way to enter compared trees described in <a href="#compared_trees">Compared trees</a> section.
+        </p>
+        <div style="border: 1px solid" id="list">
+            <iframe src="trees\testBSP.newick.txt" frameborder="0" height="400"
+                       width="100%">
+            </iframe>
+        </div>
+        <p>File. 1 (testBSP.newick)</p>
+        <div class="row">
+            <div class="col-sm-12 col-md-9 col-lg-7 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig9b.png" style="border: 1px solid">
+                <p>Fig. 9b</p>
+            </div>
+        </div>
+        <p>Choose Matching Split distance from available unrooted metrics (Fig. 9c) and Include summary option from Other options (Fig. 9d).</p>
+        <div class="row" >
+            <div class="col-sm-7 col-md-5 col-lg-4 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig9c.png" style="border: 1px solid">
+                <p>Fig. 9c</p>
+            </div>
+            <div class="col-sm-4 col-md-3 col-lg-2 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig9d.png" style="border: 1px solid">
+                <p>Fig. 9d</p>
+            </div>
+        </div>
+        <p>As a result (Fig. 9e), we obtain 5 comparisons and its summary.</p>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig9e.png" style="border: 1px solid">
+                <p>Fig. 9e</p>
+            </div>
+        </div>
+        <p>These calculations can be saved to report.txt file (Fig. 9f) by clicking the Save report button.</p>
+        <div class="row">
+            <div class="col-sm-9 col-md-9 col-lg-9 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig9f.png" style="border: 1px solid">
+                <p>Fig. 9f</p>
+            </div>
+        </div>
+        <h3>Computing normalized distances</h3>
+        <p>
+            Reporting distances divided by pre-computed empirical average values for random trees (generated according to Yule and uniform models, Normalized distances option) can help in an interpretation of the similarity level of analyzed trees in chosen metric.
+            In the following example, the distance in the MS metric of each tree from a given set (File. 2) to the reference tree (File. 3) is computed. Analyzed trees have 15 leaves.
+        </p>
+        <div class="row" >
+            <div class="col-sm-12 col-md-6 col-lg-6" >
+                <iframe src="trees\test_set.trees.txt" style="border: 1px solid" id="list" height="300"
+                       width="100%">
+                </iframe>
+                <p>File. 2 (test_set.trees)</p>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6" >
+                <iframe src="trees\ref_trees.trees.txt" style="border: 1px solid" id="list" height="150"
+                       width="100%">
+                </iframe>
+                <p>File. 3 (testBSP.newick)</p>
+            </div>
+        </div>
+        <p>Select Ref-to-all comparison and enter trees from a given set (File. 2) and reference tree (File. 3) to the main newick trees window as shown in Fig 10a.</p>
+        <div class="row" style="border: 1px solid">
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                <img class="img-responsive" height="400px" src="img/fig10a.png">
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6" >
+                <img class="img-responsive" height="400px" src="img/fig10a_2.png">
+            </div>
+        </div>
+        <p>Fig. 10a</p>
+        <p>Choose Matching Split distance from available unrooted metrics and Normalized distances option from Other options as shown in Fig 10b.</p>
+        <div class="row">
+            <div class="col-sm-7 col-md-5 col-lg-4 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig10b.png" style="border: 1px solid">
+                <p>Fig. 10b</p>
+            </div>
+        </div>
+        <p>As a result (Fig. 10c), we obtain 12 comparisons without summary.</p>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig10c.png" style="border: 1px solid">
+                <p>Fig. 10c</p>
+            </div>
+        </div>
+        <p>Basic interpretation of result.txt file (Fig. 10d):</p>
+        <ul>
+            <li>Tree number <span style="color: green">11</span> has the same topology as the reference tree.</li>
+            <li>Tree number <span style="color: blue">12</span> is very similar to the reference tree in comparison to similarly of random on 15 leaves (the normalized distance is about 0.15 and 0.13 depending on the random model).</li>
+            <li>Trees with numbers <span style="color: red">1</span> to <span style="color: red">10</span> are approximately as similar to the reference tree as random trees to each other (the normalized distance is close to 1).</li>
+        </ul>
+        In ordered to perform more advance similarity analysis, e.g. involving different model of
+        generation of random trees, user my need to use TreeCmp twice:
+        <ul>
+            <li>to compute distances between custom set of random trees generated by other software, e.g. Evolver application form PAML package (http://abacus.gene.ucl.ac.uk/software/paml.html) to obtain the empirical average distance in a particular metric or its distribution,</li>
+            <li>to compute the distance between analyzed trees.</li>
+        </ul>
+        <div class="row">
+            <div class="col-sm-9 col-md-9 col-lg-9 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig10d.png" style="border: 1px solid">
+                <p>Fig. 10d</p>
+            </div>
+        </div>
+        <h3>Finding the most similar trees in the input file</h3>
+        <p>
+            The most convenient comparison mode for such purpose is a Matrix (default) mode. In the following example (File. 4), the Matching Split distance is used.
+        </p>
+        <div class="col-sm-12 col-md-12 col-lg-12"  id="list">
+            <iframe src="trees\plain2.trees.txt" style="border: 1px solid" height="100"
+                    width="25%">
+            </iframe>
+            <p>File. 4 (plain2.trees)</p>
+        </div>
+        <p>
+            Trees number 2, i.e.: (a,b,(c,(d,e))) and 3, i.e.:(((a,b),c),d,e) in the input are the most similar.
+            In fact, they have the same topology (trees are assumed to be unrooted as metric for unrooted trees is used) because their distance is 0 as shown in Fig. 11 (report.txt file).
+        </p>
+        <div class="row">
+            <div class="col-sm-9 col-md-9 col-lg-9 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig11.png" style="border: 1px solid">
+                <p>Fig. 11</p>
+            </div>
+        </div>
+
+        <h3>Exporting data to other applications: MS Excel, R</h3>
+        <p>
+            In order to export data to MS Excel open the output file in any text editor and use copy and paste mechanism.
+            Alternatively, you can open the input file directly in MS Excel application using the tabular character as a filed separator.</p>
+        <p>
+            In order to pass data to R (http://www.r-project.org/) it is convenient to have the TreeCmp result file in a simple tabular form (therefore, it is recommended to avoid Include summary option, because it results in generation the summary section, which disturb the tabular order).
+            Such files can be easily read by R environment by using for example the read.table function as follows:
+            <br/>
+            <span class="console">treeCmpData<-read.table("C:\\Program Files\\TreeCmp\\examples\\plain\\result.txt", header = TRUE, sep = "\t")</span>
+            <br/>
+                In the example, the file to read “result.txt” is placed in “C:\Program Files\TreeCmp\examples\plain” folder.
+        </p>
     </div>
     <!-- FOOTER -->
     <div class="row footer">
