@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.forester.io.parsers.PhylogenyParser;
+import org.forester.io.parsers.nexus.NexusPhylogeniesParser;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
@@ -99,7 +101,9 @@ public class NewickValidator {
 		}*/
 		
 		try {
-			Phylogeny[] trees = ParserUtils.readPhylogenies(fileLoc);
+            PhylogenyParser parser = new NexusPhylogeniesParser();
+            parser.setSource(fileLoc);
+			Phylogeny[] trees = parser.parse();
 			if (limitedTreesSize) {
 				if (trees.length > MAX_TREES_TRESHOLD) {
 					objError = new FieldError("newick", fieldName, "More than " + MAX_TREES_TRESHOLD + " trees are forbidden");
