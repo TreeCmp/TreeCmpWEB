@@ -12,6 +12,8 @@ function getReport(reportStstus) {
         type: 'POST',
         mimeType:"text/html; charset=UTF-8",
         success: function(result) {
+            if (result != null && navigator.msSaveBlob)
+                return navigator.msSaveBlob(new Blob([result], { type: "data:attachment/text" }), "report.txt");
             var a = $("<a style='display: none;'/>");
             var url = window.URL.createObjectURL(new Blob([result], {type: "data:attachment/text"}));
             a.attr("href", url);
