@@ -12,22 +12,18 @@ function getReport(reportStstus) {
         type: 'POST',
         mimeType:"text/html; charset=UTF-8",
         success: function(result) {
-            setTimeout(function(){
-                var link = document.createElement('a');
-                link.download = 'report.txt';
-                var blob = new Blob([result], {type: 'text/plain'});
-                link.href = window.URL.createObjectURL(blob);
-                link.onclick = destroyClickedElement;
-                link.click();
-                reportStstus.unsaved = false;
-            }, 100);
+            var a = $("<a style='display: none;'/>");
+            var url = window.URL.createObjectURL(new Blob([result], {type: "data:attachment/text"}));
+            a.attr("href", url);
+            a.attr("download", "report.txt");
+            $("body").append(a);
+            a[0].click();
+            window.URL.revokeObjectURL(url);
+            a.remove();
         },
         error: function() {
             alert("something went wrong :(");
-        }
-    });
-}
+        },
 
-function destroyClickedElement(event) {
-    document.body.removeChild(event.target);
+    });
 }
