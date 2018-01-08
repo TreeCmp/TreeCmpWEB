@@ -7,22 +7,56 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
     <link rel="stylesheet" th:href="@{css/treecmp.css}" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
     <script src="js/navigation.js"></script>
-    <script src="js/jquery.tablesorter.js"></script>
+
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
 
     <script type="text/javascript">
 
-        var reportStstus = { unsaved: true };
+        $(document).ready(function() {
+            $('#reportTable').DataTable( {
+                dom: 'Bfrtip',
+                buttons: [
+                    { extend: 'copyHtml5', footer: true },
+                    { extend: 'csvHtml5', footer: true },
+                    { extend: 'excelHtml5', footer: true },
+                    { extend: 'pdfHtml5', footer: true },
+                    { extend: 'print', footer: true }
+                ]
+            } );
+            $('#summaryTable').DataTable( {
+                "bPaginate": false,
+                dom: 'Bfrtip',
+                buttons: [
+                    { extend: 'copyHtml5', footer: true },
+                    { extend: 'csvHtml5', footer: true },
+                    { extend: 'excelHtml5', footer: true },
+                    { extend: 'pdfHtml5', footer: true },
+                    { extend: 'print', footer: true }
+                ]
+            } );
+        } );
 
-        $(function() {
+        //var reportStstus = { unsaved: true };
+
+/*        $(function() {
             $("#reportTable").tablesorter();
-        });
+        });*/
 
-        window.onbeforeunload = function(e) {
+/*        window.onbeforeunload = function(e) {
             if (reportStstus.unsaved == true){
                 var dialogText = 'Unsaved report. Do you want to leave this site?';
                 e.returnValue = dialogText;
@@ -31,11 +65,11 @@
             else {
                 return null;
             }
-        };
+        };*/
 
-        function saveReport() {
+/*        function saveReport() {
             reportSaved = null;
-        }
+        }*/
 
     </script>
 
@@ -79,7 +113,7 @@
             <div th:utext="${metric}" />
         </div>
     </div>
-    <button type="button" name="saveRep" class="btn btn-primary" onclick="getReport(reportStstus)" >Save report</button>
+    <!--<button type="button" name="saveRep" class="btn btn-primary" onclick="getReport(reportStstus)" >Save report</button>-->
 
 </div>
 <!-- FOOTER -->

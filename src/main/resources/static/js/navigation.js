@@ -22,6 +22,7 @@ function getReport(reportStstus) {
             a[0].click();
             window.URL.revokeObjectURL(url);
             a.remove();
+            reportStstus.unsaved = false;
         },
         error: function() {
             alert("something went wrong :(");
