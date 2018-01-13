@@ -7,8 +7,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
     <link rel="stylesheet" th:href="@{css/treecmp.css}" type="text/css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />
+    <!--<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.semanticui.min.css" />-->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -28,7 +31,10 @@
 
         $(document).ready(function() {
             $('#reportTable').DataTable( {
-                dom: 'Bfrtip',
+                //scrollY:        200,
+                //scrollCollapse: true,
+                //paging:         false,
+                dom: 'Bfrtlip',
                 buttons: [
                     { extend: 'copyHtml5', footer: true },
                     { extend: 'csvHtml5', footer: true },
@@ -39,7 +45,7 @@
             } );
             $('#summaryTable').DataTable( {
                 "bPaginate": false,
-                dom: 'Bfrtip',
+                dom: 'Brtp',
                 buttons: [
                     { extend: 'copyHtml5', footer: true },
                     { extend: 'csvHtml5', footer: true },
@@ -51,10 +57,6 @@
         } );
 
         //var reportStstus = { unsaved: true };
-
-/*        $(function() {
-            $("#reportTable").tablesorter();
-        });*/
 
 /*        window.onbeforeunload = function(e) {
             if (reportStstus.unsaved == true){
@@ -113,7 +115,7 @@
             <div th:utext="${metric}" />
         </div>
     </div>
-    <!--<button type="button" name="saveRep" class="btn btn-primary" onclick="getReport(reportStstus)" >Save report</button>-->
+    <button type="button" name="saveRep" class="dt-button" onclick="getReport(/*reportStstus*/)" >Raw report</button>
 
 </div>
 <!-- FOOTER -->

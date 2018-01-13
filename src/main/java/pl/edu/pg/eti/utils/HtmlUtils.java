@@ -118,11 +118,11 @@ public class HtmlUtils {
 			if(shortTable == true && i < 3)
 				continue;
 
-			String arrows="";
-			if (isSummary == false && shortTable == false) arrows=arrow_bottom+arrow_top;
+			/*String arrows="";
+			if (isSummary == false && shortTable == false) arrows=arrow_bottom+arrow_top;*/
 
 			if(header == true) {
-				row.append(boldedCell(cells[i]+arrows));
+				row.append(boldedCell(cells[i]/*+arrows*/));
 			}
 			else {
 				row.append(cell(cells[i]));
@@ -201,8 +201,8 @@ public class HtmlUtils {
 	private final String table_separator = "---------";
 	private final String line_separator = System.getProperty("line.separator");
     private final String line_break = "<br>";
-	private final String report_table_start = "<div class=\"table-responsive\"/> <table id=\"reportTable\" class=\"table table-hover\">";
-    private final String summary_table_start = "<div class=\"table-responsive\"/> <table id=\"summaryTable\" class=\"table table-hover\">";
+	private final String report_table_start = "<div class=\"table-responsive\"/> <table id=\"reportTable\" class=\"table order-column display\" cellspacing=\"0\" width=\"100%\">";
+    private final String summary_table_start = "<div class=\"table-responsive\"/> <table id=\"summaryTable\" class=\"table order-column display\" cellspacing=\"0\" width=\"100%\">";
 	private final String table_end = "</table> </div>";
 	private final String tablehead_start = "<thead>";
 	private final String tablehead_end = "</thead>";
