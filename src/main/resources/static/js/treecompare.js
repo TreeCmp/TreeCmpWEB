@@ -3682,8 +3682,8 @@ var TreeCompare = function(){
             highlight = false;
         }
 
-        var worker1 = $.work({file: './js/bcn_processor.js', args: {tree1: tree1, tree2: tree2, recalculate: recalculate} });
-        var worker2 = $.work({file: './js/bcn_processor.js', args: {tree1: tree2, tree2: tree1, recalculate: recalculate} });
+        var worker1 = $.work({file: '../js/bcn_processor.js', args: {tree1: tree1, tree2: tree2, recalculate: recalculate} });
+        var worker2 = $.work({file: '../js/bcn_processor.js', args: {tree1: tree2, tree2: tree1, recalculate: recalculate} });
 
         $.when(worker1, worker2).done(function(t1, t2){
             var bcnvalT1 = [];
