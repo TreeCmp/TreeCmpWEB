@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
     <link rel="stylesheet" href="css/treecmp.css" type="text/css" />
 
-
     <style>
         .form-group .item{white-space: nowrap; display:inline}
     </style>
@@ -181,7 +180,27 @@
         <p>
             After completing calculations, results appear in the new tab as shown in Fig. 7.
             Each row (excluding header) contains information about calculated metrics for one pair of compared trees.
-            In subsequent columns, we can find the metrics selected in the previous step (Fig. 7A).
+            In the first three rows we find the ordinal number and numbers of compared trees.(Fig. 7A).
+            In subsequent columns, we can find the metrics selected in the previous step (Fig. 7B).
+        </p>
+        <p>
+            Each pair of compared trees can be drawn by clicking corresponding row.
+            The visualized trees will be displayed in a new pop-up window using the <a href="http://phylo.io/">Phylo.io</a> application.
+            Detailed information related to manipulation of displayed trees are placed in the manual available in the newly displayed window.
+        </p>
+        <p>
+            After using Normalized distances option the following two columns (Fig. 7C) per each chosen metric appear additionally in the output file.
+            These columns contain the value of the distance in a particular metric divided by its empirical average value.
+            If the number of common leaves in compared trees is out of supported range (which is form 4 to 1000), then “N/A” value is inserted.
+            For details regarding generating phylogenetic trees under the Yule and uniform models see (McKenzie and Steel 2000; Semple and Steel 2003).
+        </p>
+        <p>
+            By default, data is sorted in ascending order by first column containing the ordinal numbers.
+            We can easily change it by clicking the appropriate column header (this also applies to the order: decreasing, increasing).
+            In order to search/filter only rows that containing a certain phrase, we can use the search control (Fig. 7D).
+        </p>
+        <p>
+            The displayed data (excluding filtered ones) can be easily copied to the system clipboard, saved in one of the following formats: CSV, EXCEL, PDF or printed using the appropriate button (Fig. 7E).
         </p>
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12 imageContainer">
@@ -248,13 +267,7 @@
             </tr>
         </table>
         <p>
-            After using Normalized distances option the following two columns (Fig. 7B) per each chosen metric appear additionally in the output file.
-            These columns contain the value of the distance in a particular metric divided by its empirical average value.
-            If the number of common leaves in compared trees is out of supported range (which is form 4 to 1000), then “N/A” value is inserted.
-            For details regarding generating phylogenetic trees under the Yule and uniform models see (McKenzie and Steel 2000; Semple and Steel 2003).
-        </p>
-        <p>
-            Using Summary option adds an additional section to the report with the following format (Fig. 7C):
+            Using Summary option adds an additional section to the report with the following format (Fig. 7F):
         </p>
         <table class="report" style="width:50%">
             <tr>
@@ -313,14 +326,9 @@
                 <td>Number of taxa in common</td>
             </tr>
         </table>
-        <p>
-            Each pair of compared trees can be drawn by clicking the Phylo.io button (Fig. 7D Draw trees in column).
-            The visualized trees will be displayed in a new pop-up window using the <a href="http://phylo.io/">Phylo.io</a> application.
-            Detailed information related to manipulation of displayed trees are placed in the manual available in the newly displayed window.
-        </p>
         <h2>Report file</h2>
         <p>
-            By clicking the Save report button, you can save the report in text format file.
+            By clicking the Raw report button (Fig. 7G), you can save the report in text format file .
             This file is tab separated text files (TSV), which means that they can be easily read by various data analysis software (e.g. MS Excel, R, OpenOffice.org).
             An report file consists of two sections (Fig 8).
             The first section contains formatted in rows values of distances in selected metrics.

@@ -12,12 +12,13 @@ function getReport(/*reportStstus*/) {
         type: 'POST',
         mimeType:"text/html; charset=UTF-8",
         success: function(result) {
+            var rawReportFilename = "TreeCmp Comparison of Phylogenetic Trees in Polynomial Time - Raw Report.txt";
             if (result != null && navigator.msSaveBlob)
-                return navigator.msSaveBlob(new Blob([result], { type: "data:attachment/text" }), "report.txt");
+                return navigator.msSaveBlob(new Blob([result], { type: "data:attachment/text" }), rawReportFilename);
             var a = $("<a style='display: none;'/>");
             var url = window.URL.createObjectURL(new Blob([result], {type: "data:attachment/text"}));
             a.attr("href", url);
-            a.attr("download", "report.txt");
+            a.attr("download", rawReportFilename);
             $("body").append(a);
             a[0].click();
             window.URL.revokeObjectURL(url);
