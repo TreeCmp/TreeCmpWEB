@@ -72,6 +72,20 @@ public class Newick {
 		this.unrootedMetrics = unrootedMetrics;
 	}
 
+	public boolean containsMetric(String metric) {
+		for (String m:this.unrootedMetrics) {
+			if (m.equals(metric)) {
+				return true;
+			}
+		}
+		for (String m:this.rootedMetrics) {
+			if (m.equals(metric)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public boolean isHasMetrics() {
 		if (unrootedMetrics != null && rootedMetrics != null) {
 			return unrootedMetrics.length > 0 || rootedMetrics.length > 0;

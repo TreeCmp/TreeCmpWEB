@@ -20,6 +20,8 @@ public class NewickValidator {
 	private Integer MAX_WINDOW_VAL = 1000;
 	private Integer MAX_TREES_TRESHOLD = 100;
 	private Integer MAX_LEAVES_TRESHOLD = 1000;
+	private Integer MAX_LEAVES_PROTOTYPE_METRIC_TRESHOLD = 100;
+
 
 	private String comparisionFileLoc;
 	private String refTreeFileLoc;
@@ -101,9 +103,16 @@ public class NewickValidator {
 		}*/
 		
 		try {
-            PhylogenyParser parser = new NexusPhylogeniesParser();
-            parser.setSource(fileLoc);
-			Phylogeny[] trees = parser.parse();
+            PhylogenyParser nexusParser = new NexusPhylogeniesParser();
+            nexusParser.setSource(fileLoc);
+			Phylogeny[] trees = nexusParser.parse();
+			if (trees.length == 0) {
+                trees = ParserUtils.readPhylogenies(fileLoc);
+            }
+            if(trees.length == 0) {
+                objError = new FieldError("newick", fieldName, "Input format is not correct.");
+                newickErrors.add(objError);
+            }
 			if (limitedTreesSize) {
 				if (trees.length > MAX_TREES_TRESHOLD) {
 					objError = new FieldError("newick", fieldName, "More than " + MAX_TREES_TRESHOLD + " trees are forbidden");
@@ -111,6 +120,11 @@ public class NewickValidator {
 				}
 				else {
                     for (Phylogeny tree : trees) {
+                        if (newick.containsMetric("um") && tree.getNodeCount() > MAX_LEAVES_PROTOTYPE_METRIC_TRESHOLD) {
+                            objError = new FieldError("newick", fieldName, "For UMAST metric trees with more than " + MAX_LEAVES_PROTOTYPE_METRIC_TRESHOLD + " leaves are forbidden");
+                            newickErrors.add(objError);
+                            break;
+                        }
                         if (tree.getNodeCount() > MAX_LEAVES_TRESHOLD) {
                             objError = new FieldError("newick", fieldName, "Trees with more than " + MAX_LEAVES_TRESHOLD + " leaves are forbidden");
                             newickErrors.add(objError);

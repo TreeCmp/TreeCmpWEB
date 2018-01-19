@@ -7,5 +7,5 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	<welcome-file-list>
 		<welcome-file>/</welcome-file>
 	</welcome-file-list>
-
+	<display-name>TreeCmp 2.0</display-name>
 </web-app>
