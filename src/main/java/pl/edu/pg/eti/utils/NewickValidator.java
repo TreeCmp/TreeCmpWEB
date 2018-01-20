@@ -18,7 +18,7 @@ public class NewickValidator {
 
 	private Integer MIN_WINDOW_VAL = 2;
 	private Integer MAX_WINDOW_VAL = 1000;
-	private Integer MAX_TREES_TRESHOLD = 100;
+	private Integer MAX_TREES_TRESHOLD = 10;
 	private Integer MAX_LEAVES_TRESHOLD = 1000;
 	private Integer MAX_LEAVES_PROTOTYPE_METRIC_TRESHOLD = 100;
 
@@ -120,12 +120,12 @@ public class NewickValidator {
 				}
 				else {
                     for (Phylogeny tree : trees) {
-                        if (newick.containsMetric("um") && tree.getNodeCount() > MAX_LEAVES_PROTOTYPE_METRIC_TRESHOLD) {
+                        if (newick.containsMetric("um") && tree.getNumberOfExternalNodes() > MAX_LEAVES_PROTOTYPE_METRIC_TRESHOLD) {
                             objError = new FieldError("newick", fieldName, "For UMAST metric trees with more than " + MAX_LEAVES_PROTOTYPE_METRIC_TRESHOLD + " leaves are forbidden");
                             newickErrors.add(objError);
                             break;
                         }
-                        if (tree.getNodeCount() > MAX_LEAVES_TRESHOLD) {
+                        if (tree.getNumberOfExternalNodes() > MAX_LEAVES_TRESHOLD) {
                             objError = new FieldError("newick", fieldName, "Trees with more than " + MAX_LEAVES_TRESHOLD + " leaves are forbidden");
                             newickErrors.add(objError);
                             break;
