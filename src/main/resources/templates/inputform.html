@@ -207,14 +207,23 @@
 										<div id="collapse3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="infoBox3">
 											<div class="panel-body">
 												<div>
-													<input type="checkbox" th:field="*{normalizedDistances}" id="opNormDis" /> Normalized distances
+													<input type="checkbox" th:field="*{normalizedDistances}" id="opNormDis" />
+                                                    <div class="tooltip"> Normalized distances
+                                                        <span class="tooltiptext">Reporting distances divided by pre-computed empirical average values for random trees (generated according to Yule and uniform models) can help in an interpretation of the similarity level of analyzed trees in chosen metric.</span>
+                                                    </div>
 												</div>
 												<div>
-													<input type="checkbox" th:field="*{pruneTrees}" id="opPrTrees" /> Prune trees
+													<input type="checkbox" th:field="*{pruneTrees}" id="opPrTrees" />
+                                                    <div class="tooltip"> Prune trees
+                                                        <span class="tooltiptext">Prune compared trees if needed. This option is design to allow comparing trees having different (partially overlapping) sets of taxa. After using this option three additional columns appear in report table.</span>
+                                                    </div>
 												</div>
 												<div>
-													<input type="checkbox" th:field="*{includeSummary}" id="opInclSum" /> Include summary
-												</div>
+													<input type="checkbox" th:field="*{includeSummary}" id="opInclSum" />
+                                                    <div class="tooltip"> Include summary
+                                                        <span class="tooltiptext"> Include additional summary section with data computed based on all rows that appears in report table.</span>
+                                                    </div>
+                                                </div>
 											</div>
 										</div>
 									</div>
@@ -231,6 +240,7 @@
 			</div>
 		</form>
 	</div>
+
 	<!-- FOOTER -->
 	<div class="row footer">
 		<div class="col-xs-12 text-center">
