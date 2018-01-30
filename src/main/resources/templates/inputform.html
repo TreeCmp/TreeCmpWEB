@@ -13,6 +13,7 @@
 	</style>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/ww.jquery.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
     <script src="js/navigation.js"></script>
@@ -55,7 +56,7 @@
 	<!-- MAIN CONTAINER -->
 	<div class="container-fluid">
 
-		<form method="post" th:object="${newickStringNew}" th:action="@{/report}">
+		<form id="form" method="post" th:object="${newickStringNew}" th:action="@{/report}">
 			<div class="row">
 				<div class="col-xs-12 col-xs-offset-0 col-lg-offset-1 main">
 					<div class="form-group">
@@ -239,6 +240,14 @@
 				</div>
 			</div>
 		</form>
+
+        <div id="WaitDialog" class="hidden" style="text-align: center">
+            <img  src="img/spinner.gif" />
+            <div style="margin-top: 10px; color: white">
+                <b>Please wait</b>
+            </div>
+        </div>
+
 	</div>
 
 	<!-- FOOTER -->
@@ -252,6 +261,13 @@
 </body>
 
 <script type="text/javascript">
+
+    $("#form").submit(function() {
+        $("body").css("cursor", "wait");
+        var wd = document.getElementById("WaitDialog");
+        wd.classList.remove("hidden");
+        $("#WaitDialog").modalDialog();
+    });
 
     $("#addFirstExmpTrees").click(function() {
         $("#newickInputFirst").val("#nexus\n" +
