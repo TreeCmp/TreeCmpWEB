@@ -121,26 +121,10 @@
 
                                 <div>
                                     <label>Examples:</label>
-                                    <div class="exampleBtn singleIn" id="addFirstExmpTrees" style="display:inline-block;">
-                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Example trees stored in Nexus format.">
-                                            #1
-                                        </a>
-                                    </div>
-                                    <div class="exampleBtn singleIn" id="addSecondExmpTrees" style="display:inline-block;">
-                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Bird trees (6 trees with &lt;= 17 leaves each) obtained based on different markers from S.V. Edwards, A. Cloutier, A. J. Baker, &quot;Conserved Nonexonic Elements: A Novel Class of Marker for Phylogenomics&quot;, Systematic Biology 66(6):1028–1044, 2017, https://doi.org/10.1093/sysbio/syx058">
-                                            #2
-                                        </a>
-                                    </div>
-                                    <div class="exampleBtn singleIn" id="addThirdExmpTrees" style="display:inline-block;">
-                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Seabird supertrees (2 trees, 122 leaves including outgroup): Adams consensus and strict consensus from M. Kennedy, R. D. M. Page, &quot;Seabird supertrees: Combining partial estimates of procellariiform phylogeny&quot;, The Auk 119(1):88–108, 2002, https://treebase.org/treebase-web/search/study/trees.html?id=853">
-                                            #3
-                                        </a>
-                                    </div>
-                                    <div class="exampleBtn singleIn" id="addFourthExmpTrees" style="display:inline-block;">
-                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Seabird supertrees obtained using different methods (6 supertrees wich 121 leaves as ref-trees, 7 source trees with the number of leaves between 14 and 90) from C. Whidden, N. Zeh, R. G. Beiko, &quot;Supertrees Based on the Subtree Prune-and-Regraft Distance&quot;, Systematic Biology, 63(4):566-581, 2014, https://doi.org/10.1093/sysbio/syu023">
-                                            #4
-                                        </a>
-                                    </div>
+                                    <div class="exampleBtn singleIn" id="addFirstExmpTrees" style="display:inline-block;"><a href="#">#1</a></div>
+                                    <div class="exampleBtn singleIn" id="addSecondExmpTrees" style="display:inline-block;"><a href="#">#2</a></div>
+                                    <div class="exampleBtn singleIn" id="addThirdExmpTrees" style="display:inline-block;"><a href="#">#3</a></div>
+                                    <div class="exampleBtn singleIn" id="addFourthExmpTrees" style="display:inline-block;"><a href="#">#4</a></div>
                                 </div>
 
 							</div>
@@ -225,21 +209,21 @@
 											<div class="panel-body">
 												<div>
 													<input type="checkbox" th:field="*{normalizedDistances}" id="opNormDis" />
-                                                    <span data-toggle="tooltip" data-placement="top" title="Reporting distances divided by pre-computed empirical average values for random trees (generated according to Yule and uniform models) can help in an interpretation of the similarity level of analyzed trees in chosen metric.">
-                                                        Normalized distances
-                                                    </span>
+                                                    <div class="tooltip"> Normalized distances
+                                                        <span class="tooltiptext">Reporting distances divided by pre-computed empirical average values for random trees (generated according to Yule and uniform models) can help in an interpretation of the similarity level of analyzed trees in chosen metric.</span>
+                                                    </div>
 												</div>
 												<div>
 													<input type="checkbox" th:field="*{pruneTrees}" id="opPrTrees" />
-                                                    <span data-toggle="tooltip" data-placement="top" title="Prune compared trees if needed. This option is design to allow comparing trees having different (partially overlapping) sets of taxa. After using this option three additional columns appear in report table.">
-                                                        Prune trees
-                                                    </span>
+                                                    <div class="tooltip"> Prune trees
+                                                        <span class="tooltiptext">Prune compared trees if needed. This option is design to allow comparing trees having different (partially overlapping) sets of taxa. After using this option three additional columns appear in report table.</span>
+                                                    </div>
 												</div>
 												<div>
 													<input type="checkbox" th:field="*{includeSummary}" id="opInclSum" />
-                                                    <span data-toggle="tooltip" data-placement="top" title="Include additional summary section with data computed based on all rows that appears in report table.">
-                                                        Include summary
-                                                    </span>
+                                                    <div class="tooltip"> Include summary
+                                                        <span class="tooltiptext"> Include additional summary section with data computed based on all rows that appears in report table.</span>
+                                                    </div>
                                                 </div>
 											</div>
 										</div>
@@ -350,8 +334,6 @@
 	/*<![CDATA[*/
 
     $(document).ready(function() {
-
-        $('[data-toggle="tooltip"]').tooltip();
         Hide();
 
         var rbWindow = document.getElementById('rbWindow');
