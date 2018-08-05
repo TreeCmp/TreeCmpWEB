@@ -26,22 +26,22 @@ import java.util.Map;
 public class ConfigParser {
 
 	private InputStream metricConfigFileStream;
-	
+
 	public ConfigParser() {
 		
-		availableRootedMetricsWithCmd = new HashMap<String, String>();
-		availableUnrootedMetricsWithCmd = new HashMap<String, String>();
+		availableRootedMetricsWithCmd = new HashMap<String, MetricProperties>();
+		availableUnrootedMetricsWithCmd = new HashMap<String, MetricProperties>();
 		availableMetricsFiles = new ArrayList<String>();
 	}
 
-	private Map<String, String> availableRootedMetricsWithCmd;
-	private Map<String, String> availableUnrootedMetricsWithCmd;
+	private Map<String, MetricProperties> availableRootedMetricsWithCmd;
+	private Map<String, MetricProperties> availableUnrootedMetricsWithCmd;
 	private List<String> availableMetricsFiles;
 
-	public Map<String, String> getAvailableRootedMetricsWithCmd() {
+	public Map<String, MetricProperties> getAvailableRootedMetricsWithCmd() {
 		return availableRootedMetricsWithCmd;
 	}
-	public Map<String, String> getAvailableUnrootedMetricsWithCmd() {
+	public Map<String, MetricProperties> getAvailableUnrootedMetricsWithCmd() {
 		return availableUnrootedMetricsWithCmd;
 	}
 	public List<String> getAvailableMetricsFiles() { return availableMetricsFiles; }
@@ -73,13 +73,18 @@ public class ConfigParser {
 					if(rooted.getLength() != 0)
 					{
 						availableRootedMetricsWithCmd.put(eElement.getElementsByTagName("command_name")
-								.item(0).getTextContent(), String.format(" %s", eElement.getElementsByTagName("fullname").item(0).getTextContent()));
+								.item(0).getTextContent(), new MetricProperties(
+								        String.format(" %s", eElement.getElementsByTagName("fullname").item(0).getTextContent()),
+                                String.format(" %s", eElement.getElementsByTagName("full_description").item(0).getTextContent())
+                        ));
 					}
-					else	/****** GETTING UNROOTED METRICS *******/
-					{
-						availableUnrootedMetricsWithCmd.put(eElement.getElementsByTagName("command_name")
-								.item(0).getTextContent(), String.format(" %s", eElement.getElementsByTagName("fullname").item(0).getTextContent()));
-					}
+					else	/****** GETTING UNROOTED METRICS *******/ {
+                        availableUnrootedMetricsWithCmd.put(eElement.getElementsByTagName("command_name")
+                                .item(0).getTextContent(), new MetricProperties(
+                                String.format(" %s", eElement.getElementsByTagName("fullname").item(0).getTextContent()),
+                                String.format(" %s", eElement.getElementsByTagName("full_description").item(0).getTextContent())
+                        ));
+                    }
 					availableMetricsFiles.add(eElement.getElementsByTagName("unif_data").item(0).getTextContent());
 					availableMetricsFiles.add(eElement.getElementsByTagName("yule_data").item(0).getTextContent());
 				}

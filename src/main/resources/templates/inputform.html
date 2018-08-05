@@ -188,7 +188,7 @@
 											<div class="panel-body">
 												<div class="form-group">
 													<div th:each="item, stat : ${rootedMetrics}">
-														<input type="checkbox" th:field="*{rootedMetrics}" th:value="${item.key}" th:text="${item.value}" />
+														<input type="checkbox" th:field="*{rootedMetrics}" th:value="${item.key}" th:text="${item.value.fullname}" />
 													</div>
 												</div>
 											</div>
@@ -204,7 +204,7 @@
 											<div class="panel-body">
 												<div class="form-group">
 													<div th:each="item, stat : ${unrootedMetrics}">
-														<input type="checkbox" th:field="*{unrootedMetrics}" th:value="${item.key}" th:text="${item.value}" />
+														<input type="checkbox" th:field="*{unrootedMetrics}" th:value="${item.key}" th:text="${item.value.fullname}" />
 													</div>
 												</div>
 											</div>
