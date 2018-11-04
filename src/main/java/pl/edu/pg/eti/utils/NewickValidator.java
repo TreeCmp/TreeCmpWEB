@@ -18,8 +18,8 @@ public class NewickValidator {
 
 	private Integer MIN_WINDOW_VAL = 2;
 	private Integer MAX_WINDOW_VAL = 1000;
-	private Integer MAX_TREES_TRESHOLD = 10;
-	private Integer MAX_LEAVES_TRESHOLD = 1000;
+	private Integer MAX_TREES_TRESHOLD = 1000;
+	private Integer MAX_LEAVES_TRESHOLD = 10000;
 	private Integer MAX_LEAVES_PROTOTYPE_METRIC_TRESHOLD = 100;
 
 
@@ -115,7 +115,7 @@ public class NewickValidator {
             }
 			if (limitedTreesSize) {
 				if (trees.length > MAX_TREES_TRESHOLD) {
-					objError = new FieldError("newick", fieldName, "More than " + MAX_TREES_TRESHOLD + " trees are forbidden");
+					objError = new FieldError("newick", fieldName, "Calculations for more than " + MAX_TREES_TRESHOLD + " trees can take a lot of time. Consider launching the application locally, it's available here: https://eti.pg.edu.pl/treecmp/download.html");
                     newickErrors.add(objError);
 				}
 				else {
@@ -126,7 +126,7 @@ public class NewickValidator {
                             break;
                         }*/
                         if (tree.getNumberOfExternalNodes() > MAX_LEAVES_TRESHOLD) {
-                            objError = new FieldError("newick", fieldName, "Trees with more than " + MAX_LEAVES_TRESHOLD + " leaves are forbidden");
+                            objError = new FieldError("newick", fieldName, "Calculations for trees with more than " + MAX_LEAVES_TRESHOLD + " leaves can take a lot of time. Consider launching the application locally, it's available here: https://eti.pg.edu.pl/treecmp/download.html");
                             newickErrors.add(objError);
                             break;
                         }
