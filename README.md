@@ -1,5 +1,5 @@
 # Visual TreeCmp
-Comprehensive Comparison of Phylogenetic Trees on the Web - project home page
+Comprehensive Comparison of Phylogenetic Trees on the Web
 
 ## Authors
 
