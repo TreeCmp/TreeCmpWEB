@@ -1,5 +1,6 @@
 .idea/
 target/
+out/
 src/main/resources/static/about.html
 src/main/resources/static/contact.html
 src/main/resources/static/download.html
