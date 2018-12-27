@@ -1,6 +1,7 @@
 package pl.edu.pg.eti.controller;
 
 import java.io.*;
+import java.net.URLDecoder;
 
 import treecmp.command.Command;
 import treecmp.commandline.CommandLineParser;
@@ -22,8 +23,16 @@ public class TreeCmpExecutor {
 
 	public TreeCmpExecutor(String[] args, String configFile, String dataDir) {
 		this.args = args;
-		this.configFile = configFile;
-		this.dataDir = dataDir;
+		try {
+			this.configFile = URLDecoder.decode(configFile, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		try {
+			this.dataDir = URLDecoder.decode(dataDir, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void Execute() {
@@ -36,7 +45,11 @@ public class TreeCmpExecutor {
 							+ "Please move TreeCmp application to a location that does not contain plus (+) character.");
 			return;
 		}
-
+		try {
+			runtimePathTemp = URLDecoder.decode(runtimePathTemp, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		try {
 			ConfigSettings.initConfig(configFile, dataDir);
 		} catch (FileNotFoundException ex) {
