@@ -57,6 +57,8 @@ public class NewickController  {
 	private static String configFile = "";
 	private static String dataDir = "";
 
+	private ModelMap lastModel;
+
 	public static void main(String[] args) throws Exception {
 		CopyDataAndConfigFilesToTemporary();
 		new SpringApplicationBuilder(NewickController.class).properties(
@@ -146,6 +148,15 @@ public class NewickController  {
 		model.addAttribute("unrootedMetrics", confParser.getAvailableUnrootedMetricsWithCmd());
 
 		return new ModelAndView("inputform", "newickStringNew", new Newick());
+	}
+
+	@RequestMapping(value = "/report", method = RequestMethod.GET)
+	public ModelAndView report2(
+			@ModelAttribute("newickStringNew") @Valid Newick newick,
+			BindingResult bindingResult,
+			ModelMap model) throws IOException {
+		model = lastModel;
+		return new ModelAndView("report", model);
 	}
 
 	@RequestMapping(value = "/report", method = RequestMethod.POST)
@@ -272,6 +283,7 @@ public class NewickController  {
 				model.addAttribute("report", "<br/><h3><center>Program return a blank report</center></h3><p><center><h4>Probably inputted trees have some different leaves. Please check the leaves labels or use \"Prune trees\" option.</h4></p></center><br/> ");
 			}
 			outputFileScanner.close();
+			lastModel = model;
 
 			return new ModelAndView("report", model);
 		}
