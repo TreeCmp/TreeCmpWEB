@@ -41,7 +41,7 @@ public class NewickController  {
 
 	@Autowired
 	ServletContext servletContext;
-	
+
 	@Value("${pl.pg.edu.eti.mode:SERVLET_CONTAINER}")
     private WorkMode workMode;
 
@@ -156,6 +156,15 @@ public class NewickController  {
 		}
 
 		return new ModelAndView("inputform", "newickStringNew", newick);
+	}
+
+	@RequestMapping(value = "/report", method = RequestMethod.GET)
+	public ModelAndView report2(
+			@ModelAttribute("newickStringNew") @Valid Newick newick,
+			BindingResult bindingResult,
+			ModelMap model) throws IOException {
+		model = lastModel;
+		return new ModelAndView("report", model);
 	}
 
 	@RequestMapping(value = "/report", method = RequestMethod.GET)
