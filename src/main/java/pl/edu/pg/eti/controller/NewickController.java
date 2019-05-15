@@ -58,6 +58,7 @@ public class NewickController  {
 	private static String dataDir = "";
 
 	private ModelMap lastModel;
+	private Newick lastNewick;
 
 	public static void main(String[] args) throws Exception {
 		CopyDataAndConfigFilesToTemporary();
@@ -146,8 +147,15 @@ public class NewickController  {
 
 		model.addAttribute("rootedMetrics", confParser.getAvailableRootedMetricsWithCmd());
 		model.addAttribute("unrootedMetrics", confParser.getAvailableUnrootedMetricsWithCmd());
+		Newick newick = null;
+		if (lastNewick == null) {
+			newick = new Newick();
+		}
+		else {
+			newick = lastNewick;
+		}
 
-		return new ModelAndView("inputform", "newickStringNew", new Newick());
+		return new ModelAndView("inputform", "newickStringNew", newick);
 	}
 
 	@RequestMapping(value = "/report", method = RequestMethod.GET)
@@ -284,6 +292,7 @@ public class NewickController  {
 			}
 			outputFileScanner.close();
 			lastModel = model;
+			lastNewick = newick;
 
 			return new ModelAndView("report", model);
 		}
