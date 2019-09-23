@@ -74,13 +74,15 @@ public class ConfigParser {
 					{
 						availableRootedMetricsWithCmd.put(eElement.getElementsByTagName("command_name")
 								.item(0).getTextContent(), new MetricProperties(
-								        String.format(" %s", eElement.getElementsByTagName("fullname").item(0).getTextContent()),
+								String.format(" %s", eElement.getElementsByTagName("name").item(0).getTextContent()),
+								String.format(" %s", eElement.getElementsByTagName("fullname").item(0).getTextContent()),
                                 String.format(" %s", eElement.getElementsByTagName("full_description").item(0).getTextContent())
                         ));
 					}
 					else	/****** GETTING UNROOTED METRICS *******/ {
                         availableUnrootedMetricsWithCmd.put(eElement.getElementsByTagName("command_name")
                                 .item(0).getTextContent(), new MetricProperties(
+								String.format(" %s", eElement.getElementsByTagName("name").item(0).getTextContent()),
                                 String.format(" %s", eElement.getElementsByTagName("fullname").item(0).getTextContent()),
                                 String.format(" %s", eElement.getElementsByTagName("full_description").item(0).getTextContent())
                         ));

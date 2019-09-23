@@ -4,13 +4,23 @@ import org.springframework.stereotype.Service;
 
 public class MetricProperties {
 
-    public MetricProperties(String n, String d) {
-        setFullname(n);
+    public MetricProperties(String n, String fn, String d) {
+        setName(n);
+        setFullname(fn);
         setFullDescription(d);
     }
 
+    private String name;
     private String fullname;
     private String fullDescription;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getFullname() {
         return fullname;

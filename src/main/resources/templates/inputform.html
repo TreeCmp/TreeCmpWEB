@@ -190,7 +190,7 @@
 												<div class="form-group">
 													<div th:each="item, stat : ${rootedMetrics}">
 														<input type="checkbox" th:field="*{rootedMetrics}" th:value="${item.key}" />
-														<span data-toggle="tooltip" data-placement="top"  th:attr="title=${item.value.fullDescription}" th:text="${item.value.fullname}"/>
+														<span data-toggle="tooltip" data-placement="top"  th:attr="title=${item.value.fullDescription}" th:text="${item.value.name + ' - (' +item.value.fullname + ' )'}"/>
 													</div>
 												</div>
 											</div>
@@ -207,7 +207,7 @@
 												<div class="form-group">
 													<div th:each="item, stat : ${unrootedMetrics}">
 														<input type="checkbox" th:field="*{unrootedMetrics}" th:value="${item.key}"  />
-														<span data-toggle="tooltip" data-placement="top"  th:attr="title=${item.value.fullDescription}" th:text="${item.value.fullname}"/>
+														<span data-toggle="tooltip" data-placement="top"  th:attr="title=${item.value.fullDescription}" th:text="${item.value.name + ' - (' +item.value.fullname + ' )'}"/>
 													</div>
 												</div>
 											</div>
