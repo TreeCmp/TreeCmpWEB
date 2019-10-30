@@ -167,15 +167,6 @@ public class NewickController  {
 		return new ModelAndView("report", model);
 	}
 
-	@RequestMapping(value = "/report", method = RequestMethod.GET)
-	public ModelAndView report2(
-			@ModelAttribute("newickStringNew") @Valid Newick newick,
-			BindingResult bindingResult,
-			ModelMap model) throws IOException {
-		model = lastModel;
-		return new ModelAndView("report", model);
-	}
-
 	@RequestMapping(value = "/report", method = RequestMethod.POST)
 	public ModelAndView report(
 			@ModelAttribute("newickStringNew") @Valid Newick newick,
