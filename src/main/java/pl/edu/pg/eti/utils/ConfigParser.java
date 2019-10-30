@@ -34,6 +34,16 @@ public class ConfigParser {
 		availableMetricsFiles = new ArrayList<String>();
 	}
 
+	private static boolean checkChildNodeByNameExist(Node parent, String child) {
+		NodeList childNodes = parent.getChildNodes();
+		for (int i = 0; i < childNodes.getLength(); i++) {
+			if (childNodes.item(i).getNodeName().equals(child)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private Map<String, MetricProperties> availableRootedMetricsWithCmd;
 	private Map<String, MetricProperties> availableUnrootedMetricsWithCmd;
 	private List<String> availableMetricsFiles;
@@ -67,7 +77,7 @@ public class ConfigParser {
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
 					Element eElement = (Element) nNode;
-					
+
 					NodeList rooted = eElement.getElementsByTagName("rooted");
 					/****** GETTING ROOTED METRICS IF THERE IS A NOTE "ROOTED" *******/
 					if(rooted.getLength() != 0)
@@ -87,8 +97,12 @@ public class ConfigParser {
                                 String.format(" %s", eElement.getElementsByTagName("full_description").item(0).getTextContent())
                         ));
                     }
-					availableMetricsFiles.add(eElement.getElementsByTagName("unif_data").item(0).getTextContent());
-					availableMetricsFiles.add(eElement.getElementsByTagName("yule_data").item(0).getTextContent());
+                    if (checkChildNodeByNameExist(eElement, "unif_data")) {
+						availableMetricsFiles.add(eElement.getElementsByTagName("unif_data").item(0).getTextContent());
+					}
+					if (checkChildNodeByNameExist(eElement, "yule_data")) {
+						availableMetricsFiles.add(eElement.getElementsByTagName("yule_data").item(0).getTextContent());
+					}
 				}
 			}
 

@@ -14,3 +14,11 @@
 	path = src/main/java/treecmp
 	url = https://github.com/TreeCmp/TreeCmp
 	branch = src
+[submodule "src/main/java/polyAlg"]
+	path = src/main/java/polyAlg
+	url = https://github.com/TreeCmp/BHVtreespace.git
+	branch = polyAlg
+[submodule "src/main/java/distanceAlg1"]
+	path = src/main/java/distanceAlg1
+	url = https://github.com/TreeCmp/BHVtreespace.git
+	branch = distanceAlg1
