@@ -4,15 +4,18 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.forester.io.parsers.PhylogenyParser;
-import org.forester.io.parsers.nexus.NexusPhylogeniesParser;
+/*import org.forester.io.parsers.PhylogenyParser;
+import org.forester.io.parsers.nexus.NexusPhylogeniesParser;*/
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
+import pal.tree.Tree;
 import pl.edu.pg.eti.model.Newick;
 
-import org.forester.io.parsers.util.ParserUtils;
-import org.forester.phylogeny.Phylogeny;
+/*import org.forester.io.parsers.util.ParserUtils;
+import org.forester.phylogeny.Phylogeny;*/
+import treecmp.config.IOSettings;
+import treecmp.io.TreeReader;
 
 public class NewickValidator {
 
@@ -103,6 +106,7 @@ public class NewickValidator {
 		}*/
 		
 		try {
+			 /*
             PhylogenyParser nexusParser = new NexusPhylogeniesParser();
             nexusParser.setSource(fileLoc);
 			Phylogeny[] trees = nexusParser.parse();
@@ -113,19 +117,33 @@ public class NewickValidator {
                 objError = new FieldError("newick", fieldName, "Input format is not correct.");
                 newickErrors.add(objError);
             }
+			  */
+			TreeReader reader = new TreeReader(fileLoc);
+			reader.open();
+			int numberOfTrees = reader.scan();
+			if(numberOfTrees == 0) {
+				objError = new FieldError("newick", fieldName, "Input format is not correct.");
+				newickErrors.add(objError);
+			}
+			reader.close();
+			reader.open();
+			IOSettings settings = IOSettings.getIOSettings();
+			reader.setStep(settings.getIStep());
+
 			if (limitedTreesSize) {
-				if (trees.length > MAX_TREES_TRESHOLD) {
+				if (numberOfTrees > MAX_TREES_TRESHOLD) {
 					objError = new FieldError("newick", fieldName, "Calculations for more than " + MAX_TREES_TRESHOLD + " trees can take a lot of time. Consider launching the application locally, it's available here: https://eti.pg.edu.pl/treecmp/download.html");
                     newickErrors.add(objError);
 				}
 				else {
-                    for (Phylogeny tree : trees) {
+					Tree tree;
+					while ((tree = reader.readNextTree()) != null) {
                         /*if (newick.containsMetric("um") && tree.getNumberOfExternalNodes() > MAX_LEAVES_PROTOTYPE_METRIC_TRESHOLD) {
                             objError = new FieldError("newick", fieldName, "For UMAST metric trees with more than " + MAX_LEAVES_PROTOTYPE_METRIC_TRESHOLD + " leaves are forbidden");
                             newickErrors.add(objError);
                             break;
                         }*/
-                        if (tree.getNumberOfExternalNodes() > MAX_LEAVES_TRESHOLD) {
+                        if (tree.getExternalNodeCount() > MAX_LEAVES_TRESHOLD) {
                             objError = new FieldError("newick", fieldName, "Calculations for trees with more than " + MAX_LEAVES_TRESHOLD + " leaves can take a lot of time. Consider launching the application locally, it's available here: https://eti.pg.edu.pl/treecmp/download.html");
                             newickErrors.add(objError);
                             break;
@@ -133,6 +151,7 @@ public class NewickValidator {
                     }
                 }
 			}
+			reader.close();
         } catch (Exception e) {
 			objError = new FieldError("newick", fieldName, "Input format is not correct.");
 			newickErrors.add(objError);

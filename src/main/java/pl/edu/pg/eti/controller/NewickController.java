@@ -214,6 +214,7 @@ public class NewickController  {
 			arguments.add(String.format("%s", refTreeFile.getAbsolutePath()));
 		}
 
+
 		NewickValidator newickVal = new NewickValidator(newick);
 
 		newickVal.validate(inputFile, refTreeFile, workMode != WorkMode.STANDALONE);
