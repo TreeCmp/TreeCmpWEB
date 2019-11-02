@@ -18,7 +18,11 @@ public class Newick {
 
 	private String newickStringFirst;
 
+	private String newickErrorFirst;
+
 	private String newickStringSecond;
+
+	private String newickErrorSecond;
 	
 	private String comparisionMode = "";
 
@@ -48,6 +52,10 @@ public class Newick {
 		return newickStringFirst;
 	}
 
+	public void setnewickErrorFirst(String newickErrorFirst) { this.newickErrorFirst = newickErrorFirst; }
+
+	public String getnewickErrorFirst() { return newickErrorFirst; }
+
 	public String getNewickStringSecond() {
 		return newickStringSecond;
 	}
@@ -55,6 +63,10 @@ public class Newick {
 	public void setNewickStringSecond(String newickStringSecond) {
 		this.newickStringSecond = newickStringSecond;
 	}
+
+	//public void setnewickErrorSecond(String newickErrorSecond) { this.newickErrorSecond = newickErrorSecond; }
+
+	public String getnewickErrorSecond() { return newickErrorSecond; }
 
 	public String[] getRootedMetrics() {
 		return rootedMetrics;

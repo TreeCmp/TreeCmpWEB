@@ -3,6 +3,7 @@ package pl.edu.pg.eti.controller;
 import java.io.*;
 import java.net.URLDecoder;
 
+import pal.tree.TreeParseException;
 import treecmp.command.Command;
 import treecmp.commandline.CommandLineParser;
 import treecmp.common.ReportUtils;
@@ -35,7 +36,7 @@ public class TreeCmpExecutor {
 		}
 	}
 
-	public void Execute() {
+	public void Execute() throws TreeParseException {
 
 		String runtimePathTemp = treecmp.Main.class.getProtectionDomain()
 				.getCodeSource().getLocation().getPath();

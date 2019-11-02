@@ -10,6 +10,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
 import pal.tree.Tree;
+import pal.tree.TreeParseException;
 import pl.edu.pg.eti.model.Newick;
 
 /*import org.forester.io.parsers.util.ParserUtils;
@@ -62,10 +63,10 @@ public class NewickValidator {
 	
 	private void validateInput(boolean limitedTreesSize) {
 		if (newick.getInputType() != null && newick.getInputType().equals(NewickUtils.STRING_INPUT)) {
-			validateInputString(newick.getNewickStringFirst(), "newickStringFirst", comparisionFileLoc, limitedTreesSize);
+			validateInputString(newick.getNewickStringFirst(), "newickErrorFirst", comparisionFileLoc, limitedTreesSize);
 			
 			if (newick.getComparisionMode().equals(NewickUtils.REF_TO_ALL_COMPARISION_MODE)) {
-				validateInputString(newick.getNewickStringSecond(), "newickStringSecond", refTreeFileLoc, limitedTreesSize);
+				validateInputString(newick.getNewickStringSecond(), "newickErrorSecond", refTreeFileLoc, limitedTreesSize);
 			}
 		} else if (newick.getInputType() != null && newick.getInputType().equals(NewickUtils.FILE_INPUT)) {
 		}
@@ -152,9 +153,13 @@ public class NewickValidator {
                 }
 			}
 			reader.close();
-        } catch (Exception e) {
+        } catch (TreeParseException e) {
+			objError = new FieldError("newick", fieldName, e.getMessage());
+			newickErrors.add(objError);
+		}catch (Exception e) {
 			objError = new FieldError("newick", fieldName, "Input format is not correct.");
 			newickErrors.add(objError);
 		}
+
 	}
 }

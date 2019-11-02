@@ -113,9 +113,10 @@
 								</table>
 								<textarea th:field="*{newickStringFirst}" class="form-control"
 											   rows="14" id="newickInputFirst"
-											   placeholder="Paste or drag and drop your trees in newick format separated by ;" style="resize: none;"></textarea>
+											   placeholder="Paste or drag and drop your trees in newick format separated by ;" style="resize: none;">
+								</textarea>
 								<div>
-									<errors th:errors="*{newickStringFirst}" class="error" />
+									<errors th:errors="*{newickErrorFirst}" class="error" />
 								</div>
 								<div>
 									<errors class="error" id="renderErrorMessage1"/>
@@ -165,9 +166,10 @@
 								</table>
 								<textarea th:field="*{newickStringSecond}" class="form-control"
 											   rows="14" id="newickInputSecond"
-											   placeholder="Paste or drag and drop your trees in newick format separated by ;" style="resize: none;"></textarea>
+											   placeholder="Paste or drag and drop your trees in newick format separated by ;" style="resize: none;">
+								</textarea>
 								<div>
-									<errors th:errors="*{newickStringSecond}" class="error" />
+									<errors th:errors="*{newickErrorSecond}" class="error" />
 								</div>
                                 <div>
                                     <errors class="error" id="renderErrorMessage2"/>
@@ -245,6 +247,12 @@
                                                         Include summary
                                                     </span>
                                                 </div>
+												<div>
+													<input type="checkbox" th:field="*{zeroWeightsAllowed}" id="opInclSum" />
+													<span data-toggle="tooltip" data-placement="top" title="Allow zero value weights, it will be default value if the weight is not defined (applies only to weighted metrics).">
+                                                        Zero weights allowed
+                                                    </span>
+												</div>
 											</div>
 										</div>
 									</div>
