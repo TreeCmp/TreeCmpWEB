@@ -248,7 +248,7 @@
                                                     </span>
                                                 </div>
 												<div>
-													<input type="checkbox" th:field="*{zeroWeightsAllowed}" id="opInclSum" />
+													<input type="checkbox" th:field="*{zeroWeightsAllowed}" id="opIZeWeAll" />
 													<span data-toggle="tooltip" data-placement="top" title="Allow zero value weights, it will be default value if the weight is not defined (applies only to weighted metrics).">
                                                         Zero weights allowed
                                                     </span>
@@ -313,6 +313,7 @@
             "  tree_seven = (((6:0.093545,(4:0.037183,5:0.049616):0.132727):0.073544,(((8:0.107641,(((13:0.079625,(11:0.036049,12:0.006391):0.003710):0.040924,15:0.043925):0.000917,14:0.033768):0.117593):0.015950,7:0.174578):0.002374,(10:0.072825,9:0.060455):0.077398):0.074823):0.053716,(3:0.067359,2:0.228438):0.016452,1:0.517132);\n" +
             "end;");
         $("#newickInputSecondLabel").val('');
+		$("#opIZeWeAll").prop("checked", true);
         $("#rbRefToAll").click();
     });
 

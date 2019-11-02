@@ -19,6 +19,7 @@ import pl.edu.pg.eti.model.JsonTrees;
 import pl.edu.pg.eti.model.Newick;
 import pl.edu.pg.eti.model.WorkMode;
 import pl.edu.pg.eti.utils.*;
+import treecmp.config.IOSettings;
 
 import javax.servlet.ServletContext;
 import javax.validation.Valid;
@@ -36,6 +37,7 @@ public class NewickController  {
 	private static String NORMALIZED_DISTANCES = "-N";
 	private static String PRUNE_COMPARED = "-P";
 	private static String INCLUDE_SUMMARY = "-I";
+	private static String ZERO_WEIGHTS_ALLOWED = "-W";
 	private static String INPUT_FILE = "-i";
 	private static String OUTPUT_FILE = "-o";
 
@@ -214,6 +216,7 @@ public class NewickController  {
 			arguments.add(String.format("%s", refTreeFile.getAbsolutePath()));
 		}
 
+		IOSettings.getIOSettings().setZeroValueWeights(newick.isZeroWeightsAllowed());
 
 		NewickValidator newickVal = new NewickValidator(newick);
 
@@ -254,11 +257,15 @@ public class NewickController  {
 			if (newick.isPruneTrees()) {
 				arguments.add(String.format("%s", PRUNE_COMPARED));
 			}
-			Boolean includeSummary = false;
 
+			Boolean includeSummary = false;
 			if (newick.isIncludeSummary()) {
 				arguments.add(String.format("%s", INCLUDE_SUMMARY));
 				includeSummary = true;
+			}
+
+			if (newick.isZeroWeightsAllowed()) {
+				arguments.add(String.format("%s", ZERO_WEIGHTS_ALLOWED));
 			}
 
 			String[] argumentsToArray = new String[arguments.size()];

@@ -38,6 +38,8 @@ public class Newick {
 
 	private boolean includeSummary;
 
+	private boolean zeroWeightsAllowed;
+
 	/* METRICS */
 	private String[] rootedMetrics;
 	private String[] unrootedMetrics;
@@ -118,9 +120,11 @@ public class Newick {
 		return includeSummary;
 	}
 
-	public void setIncludeSummary(boolean includeSummary) {
-		this.includeSummary = includeSummary;
-	}
+	public void setIncludeSummary(boolean includeSummary) { this.includeSummary = includeSummary; }
+
+	public boolean isZeroWeightsAllowed() { return zeroWeightsAllowed; }
+
+	public void setZeroWeightsAllowed(boolean zeroWeightsAllowed) { this.zeroWeightsAllowed = zeroWeightsAllowed; }
 
 	public boolean isPruneTrees() {
 		return pruneTrees;
