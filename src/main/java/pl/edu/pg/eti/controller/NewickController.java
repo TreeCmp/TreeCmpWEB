@@ -19,6 +19,8 @@ import pl.edu.pg.eti.model.JsonTrees;
 import pl.edu.pg.eti.model.Newick;
 import pl.edu.pg.eti.model.WorkMode;
 import pl.edu.pg.eti.utils.*;
+import treecmp.config.ActiveMetricsSet;
+import treecmp.config.ConfigSettings;
 import treecmp.config.IOSettings;
 
 import javax.servlet.ServletContext;
@@ -216,7 +218,25 @@ public class NewickController  {
 			arguments.add(String.format("%s", refTreeFile.getAbsolutePath()));
 		}
 
+
+
 		IOSettings.getIOSettings().setZeroValueWeights(newick.isZeroWeightsAllowed());
+
+		//update active metrics in IOSettings
+		{
+			try {
+				InputStream configFileStream = new ClassPathResource("static/config/config.xml").getInputStream();
+				confParser.setMetricConfigFileStream(configFileStream);
+				confParser.clearAndSetAvailableMetrics();
+				configFileStream.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+			ActiveMetricsSet AMSet = ActiveMetricsSet.getActiveMetricsSet();
+			AMSet.clearAllMetrics();
+			AMSet.setActiveMetricsSet(newick.getRootedMetrics());
+			AMSet.setActiveMetricsSet(newick.getUnrootedMetrics());
+		}
 
 		NewickValidator newickVal = new NewickValidator(newick);
 
