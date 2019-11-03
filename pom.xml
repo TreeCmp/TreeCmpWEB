@@ -178,7 +178,7 @@
 			<version>1.9.10</version>
 		</dependency>
 
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<defaultGoal>install</defaultGoal>

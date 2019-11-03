@@ -156,17 +156,20 @@
             Additional options are available (Fig 6):
             <ul>
                 <li>
-                    report <strong> normalized distances </strong> δm for a particular metric m (Bogdanowicz et al. 2012; based on an average value from pre-computed data).
+                    Report <strong> normalized distances </strong> δm for a particular metric m (Bogdanowicz et al. 2012; based on an average value from pre-computed data).
                     This functionality is available for trees with number of leaves between 4 and 1000.
                     Note that normalized tree similarity for a particular metric m (NTSm) can be expressed by normalized distance as follows: NTSm. = 1 - δm (Bogdanowicz et al. 2012).
                 </li>
                 <li>
-                    <strong> prune </strong> compared <strong>trees</strong> if needed.
+                    <strong> Prune </strong> compared <strong>trees</strong> if needed.
                     This option is design to allow comparing trees having different (partially overlapping) sets of taxa.
                     After using this option three additional columns appear in the output file (see section 4 for details).
                 </li>
                 <li>
-                    <strong> include summary </strong> section in the output file.
+                    <strong> Include summary </strong> section in the output file.
+                </li>
+                <li>
+                    <strong> Zero weights allowed </strong> during using weighted metrics. If there is no weight assigned to the edge, its default value will be set to zero.
                 </li>
             </ul>
         <p>In the last step, click Compute button to generate report (Fig 6).</p>
@@ -219,53 +222,76 @@
             </tr>
             <tr>
                 <td>MatchingSplit</td>
-                <td>the Matching Split distance</td>
+                <td>Matching Split distance</td>
             </tr>
             <tr>
-                <td>R-F</td>
-                <td>the Robinson-Foulds distance </td>
+                <td>RF</td>
+                <td>Robinson-Foulds distance </td>
             </tr>
             <tr>
                 <td>PathDiffernce</td>
-                <td>the Path difference distance</td>
+                <td>Path difference distance</td>
             </tr>
             <tr>
                 <td>Quartet</td>
-                <td>the Quartet distance</td>
+                <td>Quartet distance</td>
             </tr>
             <tr>
                 <td>UMAST</td>
-                <td>the Unrooted maximum agreement subtree distance</td>
+                <td>Unrooted maximum agreement subtree distance</td>
             </tr>
+            <tr>
+                <td>RFWeighted</td>
+                <td>Weighted Robinsin Foulds distance </td>
+            </tr>
+            <tr>
+                <td>GeoUnrooted</td>
+                <td>Geodesic Unrooted distance </td>
+            </tr>          
             <tr>
                 <td>MatchingCluster</td>
-                <td>the Matching Cluster metric</td>
+                <td>Matching Cluster metric</td>
             </tr>
             <tr>
-                <td>R-F_Cluster</td>
-                <td>the Robinson-Foulds metric based on clusters</td>
+                <td>RF_Cluster</td>
+                <td>Robinson-Foulds metric based on clusters</td>
             </tr>
             <tr>
                 <td>NodalSplitted</td>
-                <td>the Nodal Splitted metric with L2 norm</td>
+                <td>Nodal Splitted metric with L<sup>2</sup> norm</td>
             </tr>
             <tr>
                 <td>Triples</td>
-                <td>the Triples metric</td>
+                <td>Triples metric</td>
             </tr>
-
             <tr>
                 <td>MatchingPair</td>
-                <td>the Matching Pair metric</td>
+                <td>Matching Pair metric</td>
             </tr>
             <tr>
                 <td>MAST</td>
-                <td>the Rooted maximum agreement subtree metric</td>
+                <td>Rooted maximum agreement subtree metric</td>
             </tr>
             <tr>
                 <td>CopheneticL2Metric</td>
-                <td>the Cophenetic Metric with L2 norm</td>
+                <td>Cophenetic Metric with L<sup>2</sup> norm</td>
             </tr>
+            <tr>
+                <td>RFClusterWeighted</td>
+                <td>Weighted Robinson-Foulds metric based on clusters</td>
+            </tr>
+            <tr>
+                <td>NodalSplittedWeighted</td>
+                <td>Weighted Nodal Splitted metric with L<sup>2</sup> norm</td>
+            </tr> 
+            <tr>
+                <td>GeoRooted</td>
+                <td>Geodesic Rooted metric</td>
+            </tr> 
+            <tr>
+                <td>CopheneticL2WeightedMetric</td>
+                <td>Weighted Cophenetic Metric with L<sup>2</sup> norm</td>
+            </tr>                                               
         </table>
         <p>
             Using Summary option adds an additional section to the report with the following format (Fig. 7F):
@@ -369,7 +395,7 @@
         <p>Choose Matching Split distance from available unrooted metrics (Fig. 9c) and Include summary option from Other options (Fig. 9d).</p>
         <div class="row" >
             <div class="col-sm-7 col-md-5 col-lg-4 imageContainer">
-                <img class="img-responsive" height="400px" src="img/fig9c.png" style="border: 1px solid">
+                <img class="img-responsive" height="500px" src="img/fig9c.png" style="border: 1px solid">
                 <p>Fig. 9c</p>
             </div>
             <div class="col-sm-4 col-md-3 col-lg-2 imageContainer">
@@ -489,7 +515,7 @@
     <!-- FOOTER -->
     <div class="row footer">
         <div class="col-xs-12 text-center">
-            Gdansk University of Technology &copy; 2017
+            Gdansk University of Technology &copy; 2019
         </div>
     </div>
     <!-- END OF FOOTER -->
