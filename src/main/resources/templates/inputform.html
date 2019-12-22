@@ -253,8 +253,17 @@
                                                         Zero weights allowed
                                                     </span>
 												</div>
+												<div>
+													<input type="checkbox" th:field="*{bifurcationTreesOnly}" id="opBifTrees" />
+													<span data-toggle="tooltip" data-placement="top" title="Allow only for bifurcating trees.">
+                                                        Bifurcating trees only
+                                                    </span>
+												</div>
 											</div>
 										</div>
+									</div>
+									<div>
+										<errors th:errors="*{generalError}" class="error" />
 									</div>
 								</div>
 								<!--END OF METRICS AND OTHER OPTIONS PANEL-->

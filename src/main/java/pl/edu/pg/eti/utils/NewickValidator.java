@@ -105,7 +105,7 @@ public class NewickValidator {
 			objError = new FieldError("newick", fieldName, "Newick input length must be between 2 and 5000 characters.");
 			newickErrors.add(objError);
 		}*/
-		
+
 		try {
 			 /*
             PhylogenyParser nexusParser = new NexusPhylogeniesParser();
@@ -156,7 +156,7 @@ public class NewickValidator {
         } catch (TreeParseException e) {
 			objError = new FieldError("newick", fieldName, e.getMessage());
 			newickErrors.add(objError);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			objError = new FieldError("newick", fieldName, "Input format is not correct.");
 			newickErrors.add(objError);
 		}

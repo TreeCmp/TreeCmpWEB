@@ -23,6 +23,8 @@ public class Newick {
 	private String newickStringSecond;
 
 	private String newickErrorSecond;
+
+	private String generalError;
 	
 	private String comparisionMode = "";
 
@@ -40,6 +42,8 @@ public class Newick {
 
 	private boolean zeroWeightsAllowed;
 
+	private boolean bifurcationTreesOnly;
+
 	/* METRICS */
 	private String[] rootedMetrics;
 	private String[] unrootedMetrics;
@@ -54,7 +58,7 @@ public class Newick {
 		return newickStringFirst;
 	}
 
-	public void setnewickErrorFirst(String newickErrorFirst) { this.newickErrorFirst = newickErrorFirst; }
+	//public void setnewickErrorFirst(String newickErrorFirst) { this.newickErrorFirst = newickErrorFirst; }
 
 	public String getnewickErrorFirst() { return newickErrorFirst; }
 
@@ -66,9 +70,13 @@ public class Newick {
 		this.newickStringSecond = newickStringSecond;
 	}
 
-	//public void setnewickErrorSecond(String newickErrorSecond) { this.newickErrorSecond = newickErrorSecond; }
+	//public void setNewickErrorSecond(String newickErrorSecond) { this.newickErrorSecond = newickErrorSecond; }
 
-	public String getnewickErrorSecond() { return newickErrorSecond; }
+	public String getNewickErrorSecond() { return newickErrorSecond; }
+
+	//public void setGeneralError(String generalError) { this.generalError = generalError; }
+
+	public String getGeneralError() { return generalError; }
 
 	public String[] getRootedMetrics() {
 		return rootedMetrics;
@@ -125,6 +133,10 @@ public class Newick {
 	public boolean isZeroWeightsAllowed() { return zeroWeightsAllowed; }
 
 	public void setZeroWeightsAllowed(boolean zeroWeightsAllowed) { this.zeroWeightsAllowed = zeroWeightsAllowed; }
+
+	public boolean isBifurcationTreesOnly() { return bifurcationTreesOnly; }
+
+	public void setBifurcationTreesOnly(boolean bifurcationTreesOnly) { this.bifurcationTreesOnly = bifurcationTreesOnly; }
 
 	public boolean isPruneTrees() {
 		return pruneTrees;

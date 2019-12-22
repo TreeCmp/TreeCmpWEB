@@ -10,10 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.util.DateUtils;
+import pal.tree.TreeParseException;
 import pl.edu.pg.eti.model.ComparisonMode;
 import pl.edu.pg.eti.model.JsonTrees;
 import pl.edu.pg.eti.model.Newick;
@@ -40,6 +42,7 @@ public class NewickController  {
 	private static String PRUNE_COMPARED = "-P";
 	private static String INCLUDE_SUMMARY = "-I";
 	private static String ZERO_WEIGHTS_ALLOWED = "-W";
+	private static String BIFURCATING_TREES_ONLY = "-B";
 	private static String INPUT_FILE = "-i";
 	private static String OUTPUT_FILE = "-o";
 
@@ -183,6 +186,44 @@ public class NewickController  {
 			arguments.clear();
 		}
 
+		if (newick.isNormalizedDistances()) {
+			arguments.add((String.format("%s", NORMALIZED_DISTANCES)));
+		}
+		else {
+			arguments.remove(String.format("%s", NORMALIZED_DISTANCES));
+		}
+		if (newick.isPruneTrees()) {
+			arguments.add(String.format("%s", PRUNE_COMPARED));
+		}
+		else {
+			arguments.remove(String.format("%s", PRUNE_COMPARED));
+		}
+		Boolean includeSummary = false;
+		if (newick.isIncludeSummary()) {
+			arguments.add(String.format("%s", INCLUDE_SUMMARY));
+			includeSummary = true;
+		}
+		else {
+			arguments.remove(String.format("%s", INCLUDE_SUMMARY));
+			includeSummary = false;
+		}
+		if (newick.isZeroWeightsAllowed()) {
+			arguments.add(String.format("%s", ZERO_WEIGHTS_ALLOWED));
+			IOSettings.getIOSettings().setZeroValueWeights(true);
+		}
+		else {
+			arguments.remove(String.format("%s", ZERO_WEIGHTS_ALLOWED));
+			IOSettings.getIOSettings().setZeroValueWeights(false);
+		}
+		if (newick.isBifurcationTreesOnly()) {
+			arguments.add(String.format("%s", BIFURCATING_TREES_ONLY));
+			IOSettings.getIOSettings().setBifurcatingOnly(true);
+		}
+		else {
+			arguments.remove(String.format("%s", BIFURCATING_TREES_ONLY));
+			IOSettings.getIOSettings().setBifurcatingOnly(false);
+		}
+
 		File inputFile = nu.createTempFileWithGivenContent(newick.getNewickStringFirst());
 		File refTreeFile = null;
 
@@ -246,84 +287,62 @@ public class NewickController  {
 			for (ObjectError objErr : newickVal.getErrors()) {
 				bindingResult.addError(objErr);
 			}
-		}
-
-		if (bindingResult.hasErrors()) {
 			model.addAttribute("rootedMetrics", confParser.getAvailableRootedMetricsWithCmd());
 			model.addAttribute("unrootedMetrics", confParser.getAvailableUnrootedMetricsWithCmd());
-
 			return new ModelAndView("inputform", "newickStringNew", newick);
-		} else {
-			addMetricsToArguments(newick);
-
-			// Input output files section
-
-			arguments.add((String.format("%s", INPUT_FILE)));
-			arguments.add((String.format("%s", inputFile.getAbsolutePath())));
-
-			String outputFilePath = String.format("%s.out", inputFile.getAbsolutePath());
-
-			arguments.add((String.format("%s", OUTPUT_FILE)));
-			arguments.add(outputFilePath);
-
-			// end section
-
-			// Optional options section -N -P -I
-
-			if (newick.isNormalizedDistances()) {
-				arguments.add((String.format("%s", NORMALIZED_DISTANCES)));
-			}
-
-			if (newick.isPruneTrees()) {
-				arguments.add(String.format("%s", PRUNE_COMPARED));
-			}
-
-			Boolean includeSummary = false;
-			if (newick.isIncludeSummary()) {
-				arguments.add(String.format("%s", INCLUDE_SUMMARY));
-				includeSummary = true;
-			}
-
-			if (newick.isZeroWeightsAllowed()) {
-				arguments.add(String.format("%s", ZERO_WEIGHTS_ALLOWED));
-			}
-
-			String[] argumentsToArray = new String[arguments.size()];
-			arguments.toArray(argumentsToArray);
-			TreeCmpExecutor executor;
-			try {
-
-				if (configFile == "") {
-					configFile = this.getClass().getClassLoader().getResource("static/config/config.xml").getPath();
-				}
-				if (dataDir == "") {
-					dataDir = this.getClass().getClassLoader().getResource("static/data").getPath();
-				}
-
-				executor = new TreeCmpExecutor(argumentsToArray, configFile, dataDir);
-				executor.Execute();
-
-				inputFile.delete();
-			} catch (Exception e) {
-				//e.printStackTrace();
-			}
-
-			Scanner outputFileScanner = new Scanner(new File(outputFilePath));
-
-			if(outputFileScanner.hasNext()) {
-                rawReport = outputFileScanner.useDelimiter("\\Z").next();
-				String myReport = htmlUtils.GenerateReportTable(rawReport, includeSummary);
-				model.addAttribute("report", myReport);
-			}
-			else {
-				model.addAttribute("report", "<br/><h3><center>Program return a blank report</center></h3><p><center><h4>Probably inputted trees have some different leaves. Please check the leaves labels or use \"Prune trees\" option.</h4></p></center><br/> ");
-			}
-			outputFileScanner.close();
-			lastModel = model;
-			lastNewick = newick;
-
-			return new ModelAndView("report", model);
 		}
+
+		addMetricsToArguments(newick);
+
+		// Input output files section
+
+		arguments.add((String.format("%s", INPUT_FILE)));
+		arguments.add((String.format("%s", inputFile.getAbsolutePath())));
+
+		String outputFilePath = String.format("%s.out", inputFile.getAbsolutePath());
+
+		arguments.add((String.format("%s", OUTPUT_FILE)));
+		arguments.add(outputFilePath);
+
+		String[] argumentsToArray = new String[arguments.size()];
+		arguments.toArray(argumentsToArray);
+		TreeCmpExecutor executor;
+		try {
+
+			if (configFile == "") {
+				configFile = this.getClass().getClassLoader().getResource("static/config/config.xml").getPath();
+			}
+			if (dataDir == "") {
+				dataDir = this.getClass().getClassLoader().getResource("static/data").getPath();
+			}
+
+			executor = new TreeCmpExecutor(argumentsToArray, configFile, dataDir);
+			executor.Execute();
+
+			inputFile.delete();
+		} catch (Exception e) {
+			ObjectError objError = new FieldError("newick", "generalError", e.getMessage());
+			bindingResult.addError(objError);
+			model.addAttribute("rootedMetrics", confParser.getAvailableRootedMetricsWithCmd());
+			model.addAttribute("unrootedMetrics", confParser.getAvailableUnrootedMetricsWithCmd());
+			return new ModelAndView("inputform", "newickStringNew", newick);
+		}
+
+		Scanner outputFileScanner = new Scanner(new File(outputFilePath));
+
+		if(outputFileScanner.hasNext()) {
+			rawReport = outputFileScanner.useDelimiter("\\Z").next();
+			String myReport = htmlUtils.GenerateReportTable(rawReport, includeSummary);
+			model.addAttribute("report", myReport);
+		}
+		else {
+			model.addAttribute("report", "<br/><h3><center>Program return a blank report</center></h3><p><center><h4>Probably inputted trees have some different leaves. Please check the leaves labels or use \"Prune trees\" option.</h4></p></center><br/> ");
+		}
+		outputFileScanner.close();
+		lastModel = model;
+		lastNewick = newick;
+
+		return new ModelAndView("report", model);
 	}
 
 	@RequestMapping(value="/rawReport", method=RequestMethod.POST)
