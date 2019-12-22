@@ -171,6 +171,9 @@
                 <li>
                     <strong> Zero weights allowed </strong> during using weighted metrics. If there is no weight assigned to the edge, its default value will be set to zero.
                 </li>
+                <li>
+                    Allow <strong> only bifurcating trees</strong>.
+                </li>            
             </ul>
         <p>In the last step, click Compute button to generate report (Fig 6).</p>
         </p>
@@ -501,8 +504,14 @@
 
         <h3>Exporting data to other applications: MS Excel, R</h3>
         <p>
-            In order to export data to MS Excel open the output file in any text editor and use copy and paste mechanism.
-            Alternatively, you can open the input file directly in MS Excel application using the tabular character as a filed separator.</p>
+            The report can be easily copied to clipboard, saved in one of three formats: MsExcel, CSV or PDF or printed, see Fig. 12.
+        </p>
+        <div class="row">
+            <div class="col-sm-9 col-md-9 col-lg-9 imageContainer">
+                <img class="img-responsive" height="400px" src="img/fig12.png" style="border: 1px solid">
+                <p>Fig. 12</p>
+            </div>
+        </div>
         <p>
             In order to pass data to R (http://www.r-project.org/) it is convenient to have the TreeCmp result file in a simple tabular form (therefore, it is recommended to avoid Include summary option, because it results in generation the summary section, which disturb the tabular order).
             Such files can be easily read by R environment by using for example the read.table function as follows:
