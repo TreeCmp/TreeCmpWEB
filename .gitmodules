@@ -4,15 +4,15 @@
 	branch = src
 [submodule "src/main/resources/static/config"]
 	path = src/main/resources/static/config
-	url = https://github.com/TreeCmp/TreeCmp
+	url = https://github.com/TreeCmp/TreeCmp2.git
 	branch = config
 [submodule "src/main/resources/static/data"]
 	path = src/main/resources/static/data
-	url = https://github.com/TreeCmp/TreeCmp
+	url = https://github.com/TreeCmp/TreeCmp2.git
 	branch = data
 [submodule "src/main/java/treecmp"]
 	path = src/main/java/treecmp
-	url = https://github.com/TreeCmp/TreeCmp
+	url = https://github.com/TreeCmp/TreeCmp2.git
 	branch = src
 [submodule "src/main/java/polyAlg"]
 	path = src/main/java/polyAlg
