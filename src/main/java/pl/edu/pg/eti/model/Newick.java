@@ -1,14 +1,7 @@
 package pl.edu.pg.eti.model;
 
-import java.util.Map;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
-import org.springframework.messaging.support.ErrorMessage;
+//import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
+//import org.springframework.messaging.support.ErrorMessage;
 
 ////////////////////////////////////
 //////// Input settings connected///
