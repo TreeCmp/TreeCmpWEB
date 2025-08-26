@@ -10,6 +10,7 @@
     <artifactId>TreeCmp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <!--<packaging>war</packaging>-->
 
     <name>TreeCmp</name>
     <description>Spring Boot 2.7.18 + Java 11</description>
