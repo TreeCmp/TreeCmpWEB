@@ -34,7 +34,6 @@ import java.util.*;
 
 @Controller
 @Scope("session")
-@EnableAutoConfiguration
 public class NewickController  {
 
 	private static String METRICS = "-d";
@@ -66,13 +65,6 @@ public class NewickController  {
 
 	private ModelMap lastModel;
 	private Newick lastNewick;
-
-	public static void main(String[] args) throws Exception {
-		CopyDataAndConfigFilesToTemporary();
-		new SpringApplicationBuilder(NewickController.class).properties(
-                "pl.pg.edu.eti.mode:STANDALONE").run(args);
-        //ShowMessageAboutSuccessfulStartup();
-	}
 
 	private static void CopyDataAndConfigFilesToTemporary() {
 
@@ -350,7 +342,7 @@ public class NewickController  {
         return rawReport;
     }
 
-	@RequestMapping(value = "/trees/", method = RequestMethod.GET)
+	@RequestMapping(value = "/trees", method = RequestMethod.GET)
 	public ModelAndView visualizeTrees(@RequestParam Map<String, String> treesIds, Model model) {
 		try	{
 			int firstTreeId = Integer.parseInt(treesIds.get("firstTreeId"));
