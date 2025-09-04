@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+        <meta charset="utf-8">
+        <meta name="description" content="Visual TreeCmp home page">
+        <meta name="author" content="co-authored by Damian Bogdanowicz, Krzysztof Giaro, Tomasz Goluch">
+
+        <title>Visual TreeCmp: Comprehensive Comparison of Phylogenetic Trees on the Web</title>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdn.shopify.com/s/files/1/0691/5403/t/139/assets/style.scss.css" />
+
+        <!-- Custom fonts -->        
+
+        <link href="https://fonts.googleapis.com/css?family=Advent+Pro:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Cinzel Decorative:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Pompiere:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
+
+        <!-- Custom styles-->
+        <link href="css/treecmphome.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <div class="tagline-upper text-center text-heading text-shadow text-white mt-5 d-none d-lg-block">
+      <img alt="Visual TreeCmp" width="100" height="100" src="img_WEB/logo.png" />
+      Visual TreeCmp
+  </div>
+    <div class="tagline-lower text-center text-expanded text-shadow text-uppercase text-white mb-5 d-none d-lg-block">Comprehensive Comparison of Phylogenetic Trees on the Web</div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-faded py-lg-4">
+      <div class="container">
+        <a class="navbar-brand text-uppercase text-expanded font-weight-bold d-lg-none" href="#">Visual TreeCmp</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item active px-lg-4">
+                <a class="nav-link text-uppercase text-expanded" href="index.html">Home
+                    <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item px-lg-4">
+                <a class="nav-link text-uppercase text-expanded" href="WEB">Run</a>
+            </li>            
+            <li class="nav-item px-lg-4">
+                <a class="nav-link text-uppercase text-expanded" href="download.html">Download</a>
+            </li>
+            <li class="nav-item px-lg-4">
+                <a class="nav-link text-uppercase text-expanded" href="sources.html">Sources</a>
+            </li>
+            <li class="nav-item px-lg-4">
+                <a class="nav-link text-uppercase text-expanded" href="about.html">About</a>
+            </li>
+            <li class="nav-item px-lg-4">
+                <a class="nav-link text-uppercase text-expanded" href="contact.html">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+    <div class="container">
+
+      <div class="bg-faded p-4 my-4">
+        <hr class="divider">
+        <h2 class="text-center text-lg text-uppercase my-0">
+          Visual TreeCmp Source Code
+        </h2>
+        <hr class="divider">
+        <div class="row">
+          <div class="col-lg-4">
+            <a target="_blank" href="https://github.com/TreeCmp">
+              <img class="img-fluid mb-4 mb-lg-0" src="img_WEB/GitHub.png" alt="GitHub">
+            </a>
+          </div>
+          <div class="col-lg-8">
+            <p>The Visual TreeCmp source code is available in two versions, as a library/console application (called TreeCmp) and as a GUI Spring based web/standalone application (called TreeCmpWEB).</p>
+            <p>Both versions of code are available as distributed public Git repositories hosted on GitHub.</p>
+            <div class="syntaxhighlighter">
+              <p>TreeCmp library/console application code is available at: <a target="_blank" href="https://github.com/TreeCmp/TreeCmp">https://github.com/TreeCmp/TreeCmp</a>.</p>
+              <p>To retrieve the latest TreeCmp projects source code, call this command in the Git Bash window:
+              <br/>
+              <span class="console">
+                git clone https://github.com/TreeCmp/TreeCmp
+              </span>
+              </p>
+            </div>
+            <div class="syntaxhighlighter">
+               <p>Visual TreeCmp GUI Spring based web/standalone application code is available at: <a target="_blank" href="https://github.com/TreeCmp/TreeCmpWEB">https://github.com/TreeCmp/TreeCmpWEB</a>.</p>
+              <p>To retrieve the latest Visual TreeCmp source code that contains TreeCmp call this command in the Git Bash window:
+              <br/>
+              <span class="console">
+                git clone https://github.com/TreeCmp/TreeCmpWEB
+              </span>
+              </p>
+            </div>
+            <div class="syntaxhighlighter">
+              <p>Additionally, phylogenetic random trees generator code is available at: <a target="_blank" href="https://github.com/TreeCmp/PRTGen">https://github.com/TreeCmp/PRTGen</a>.</p>
+              <p>To retrieve the latest PRTGen source code, call this command in the Git Bash window:
+              <br/>
+              <span class="console">
+                git clone https://github.com/TreeCmp/PRTGen
+              </span>            
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- /.container -->
+
+    <footer class="bg-faded text-center py-5">
+      <div class="container">
+        <p class="m-0">Gdansk University of Technology &copy; 2019</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.js"></script>
+
+  </body>

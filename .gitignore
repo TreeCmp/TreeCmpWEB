@@ -1,17 +1,5 @@
 target/
 out/
-src/main/resources/static/about.html
-src/main/resources/static/contact.html
-src/main/resources/static/download.html
-src/main/resources/static/index.html
-src/main/resources/static/sources.html
-src/main/resources/static/css/style.scss.css
-src/main/resources/static/css/treecmphome.css
-src/main/resources/static/doc/
-src/main/resources/static/img_WEB/
-src/main/resources/static/mcdist/
-src/main/resources/static/msdist/
-src/main/resources/static/treecmp/
 coverage-error.log
 pom.xml.tag
 pom.xml.releaseBackup
