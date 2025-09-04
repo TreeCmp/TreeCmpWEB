@@ -26,6 +26,9 @@ jobs:
         with:
           images: treecmp/treecmpweb
 
+      - name: Build with Maven
+        run: mvn clean package -DskipTests
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
