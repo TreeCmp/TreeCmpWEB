@@ -58,10 +58,10 @@ public class TreeCmpExecutor {
 			System.out.println(ex.getMessage());
 			return;
 		}
-		
+
 		Command cmd = null;
 		try {
-			cmd=CommandLineParser.run(args);	
+			cmd=CommandLineParser.run(args);
 		}
 		catch (Exception ex) {
 			System.out.println(ex.getMessage());
@@ -85,7 +85,7 @@ public class TreeCmpExecutor {
 			// scanning all content of the input file
 
 			System.out.println(System.getProperty("user.dir"));
-			
+
 			if (reader.open() == -1) {
 				// an error occured during reading the input file
 				return;
@@ -113,10 +113,21 @@ public class TreeCmpExecutor {
 			ReportUtils.update();
 
 			try {
+                String outputFilePath = settings.getOutputFile();
+                File outputFile = new File(outputFilePath);
+                if (!outputFile.exists()) {
+                    File parent = outputFile.getParentFile();
+                    if (parent != null && !parent.exists()) {
+                        parent.mkdirs(); // tworzy katalog jeśli nie ma
+                    }
+                    outputFile.createNewFile(); // tworzy pusty plik
+                }
 				cmd.run();
 			} catch (TreeCmpException ex) {
 				System.out.println(ex.getError());
-			}
-		}
+			} catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 	}
 }
