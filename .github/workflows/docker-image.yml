@@ -36,7 +36,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            your-dockerhub-user/treecmpweb:latest
-            your-dockerhub-user/treecmpweb:sha-${{ github.sha }}
+            treecmp/treecmpweb:latest
+            treecmp/treecmpweb:sha-${{ github.sha }}
           labels: ${{ steps.meta.outputs.labels }}
 
